@@ -20,12 +20,21 @@ export default function Header() {
   const [loadingSearch, setLoadingSearch] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
-  // Controle de Scroll
+  // Controle de Scroll para o efeito do background
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 10);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Bloquear o scroll do corpo quando o menu mobile estiver aberto
+  useEffect(() => {
+    if (menuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+  }, [menuOpen]);
 
   // Carregar categorias
   useEffect(() => {
@@ -41,7 +50,7 @@ export default function Header() {
     carregarCategorias();
   }, []);
 
-  // Busca com Debounce e Lógica de "Nenhum Resultado"
+  // Busca com Debounce
   useEffect(() => {
     if (!searchTerm.trim()) {
       setResultados([]);
@@ -66,7 +75,7 @@ export default function Header() {
 
   return (
     <header className={`fixed top-0 left-0 w-full z-100 transition-all duration-500 ${
-      scrolled ? "bg-neutral-50/80 backdrop-blur-lg shadow-md py-2" : "bg-neutral-50 py-4"
+      scrolled ? "bg-neutral-50/90 backdrop-blur-lg shadow-md py-2" : "bg-neutral-50 py-4"
     }`}>
       
       {/* Top Bar Principal */}
@@ -97,11 +106,10 @@ export default function Header() {
             />
           </div>
 
-          {/* Dropdown de Resultados (Corrigido Z-index e Vazio) */}
           {searchTerm && (
             <div className="absolute top-full left-0 mt-3 w-full bg-white rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] border border-neutral-100 overflow-hidden z-120 animate-in fade-in slide-in-from-top-2">
               {loadingSearch ? (
-                <div className="p-4 text-center text-sm text-neutral-500">
+                <div className="p-4 text-center text-sm text-neutral-500 italic">
                   <i className="fas fa-spinner fa-spin mr-2 text-blue-900"></i> Buscando...
                 </div>
               ) : resultados.length > 0 ? (
@@ -119,28 +127,30 @@ export default function Header() {
                   </Link>
                 ))
               ) : (
-                <div className="p-6 text-center">
-                  <p className="text-sm text-neutral-400 font-medium italic">
-                    Nenhum produto encontrado para "{searchTerm}"
-                  </p>
+                <div className="p-6 text-center text-sm text-neutral-400 font-medium italic">
+                  Nenhum produto encontrado
                 </div>
               )}
             </div>
           )}
         </div>
 
-        {/* Ações do Usuário */}
+        {/* Ações do Usuário e Carrinho */}
         <div className="flex items-center gap-2 md:gap-5">
           {isAuthenticated ? (
-            <div className="hidden md:flex items-center gap-3 pr-4 border-r border-neutral-200">
-              <div className="text-right leading-tight">
+            <div className="flex items-center gap-3 pr-4 border-r border-neutral-200">
+              <div className="hidden md:block text-right leading-tight">
                 <p className="text-[10px] font-bold text-neutral-400 uppercase tracking-tighter">Conta</p>
-                <Link to="/dashboard/cliente" className="text-sm font-bold text-neutral-700 hover:text-blue-900 no-underline">
-                  {user?.nome?.split(' ')[0]}
+                <Link to="/dashboard/cliente" className="text-sm font-bold text-neutral-700 hover:text-blue-900 no-underline transition-colors">
+                  Olá, {user?.username || user?.nome?.split(' ')[0]}
                 </Link>
               </div>
-              <button onClick={() => { logout(); navigate("/"); }} className="w-9 h-9 rounded-full bg-neutral-100 flex items-center justify-center text-neutral-500 hover:bg-red-50 hover:text-red-500 transition-all">
-                <i className="fas fa-power-off text-sm"></i>
+              <button 
+                onClick={() => { logout(); navigate("/"); }} 
+                title="Terminar sessão"
+                className="w-9 h-9 rounded-full bg-neutral-100 flex items-center justify-center text-neutral-500 hover:bg-red-50 hover:text-red-500 transition-all cursor-pointer"
+              >
+                <i className="fas fa-sign-out-alt"></i>
               </button>
             </div>
           ) : (
@@ -168,8 +178,6 @@ export default function Header() {
       {/* Navegação e Categorias */}
       <div className="max-w-7xl mx-auto px-6 mt-4 relative z-10">
         <div className="flex flex-col md:flex-row items-center gap-6 border-t border-neutral-100 pt-4">
-          
-          {/* Links Principais */}
           <nav className="hidden md:flex items-center gap-8 border-r border-neutral-200 pr-8 shrink-0">
             {["Início", "Produtos", "Sobre", "Contato"].map((item) => (
               <Link 
@@ -182,7 +190,6 @@ export default function Header() {
             ))}
           </nav>
 
-          {/* Slider de Categorias Estilizado */}
           <div className="w-full overflow-hidden">
             <Swiper
               modules={[Autoplay]}
@@ -207,24 +214,51 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Menu Mobile Overlay */}
+      {/* Menu Mobile Overlay Corrigido */}
       <aside className={`fixed inset-0 bg-neutral-900/60 backdrop-blur-sm z-200 transition-all duration-500 md:hidden ${menuOpen ? "opacity-100 visible" : "opacity-0 invisible"}`}>
-        <div className={`absolute left-0 top-0 h-full w-[80%] bg-white shadow-2xl transition-transform duration-500 ${menuOpen ? "translate-x-0" : "-translate-x-full"}`}>
-          <div className="p-6 border-b border-neutral-100 flex justify-between items-center">
+        {/* Camada para fechar ao clicar fora */}
+        <div className="absolute inset-0" onClick={() => setMenuOpen(false)}></div>
+
+        <div className={`fixed left-0 top-0 h-screen w-[80%] bg-white shadow-2xl transition-transform duration-500 overflow-y-auto ${menuOpen ? "translate-x-0" : "-translate-x-full"}`}>
+          <div className="p-6 border-b border-neutral-100 flex justify-between items-center sticky top-0 bg-white z-10">
             <span className="font-black text-blue-900 tracking-tighter">HOSSIDEV STORE</span>
             <button onClick={() => setMenuOpen(false)} className="text-neutral-400 text-2xl"><i className="fas fa-times"></i></button>
           </div>
+          
           <nav className="p-8 flex flex-col gap-6">
             <Link to="/" onClick={() => setMenuOpen(false)} className="text-2xl font-bold text-neutral-800 no-underline">Início</Link>
-            <Link to="/produtos" onClick={() => setMenuOpen(false)} className="text-2xl font-bold text-neutral-800 no-underline">Catálogo</Link>
+            <Link to="/produtos" onClick={() => setMenuOpen(false)} className="text-2xl font-bold text-neutral-800 no-underline">Produtos</Link>
+            
+            {isAuthenticated && (
+              <Link to="/dashboard/cliente" onClick={() => setMenuOpen(false)} className="text-2xl font-bold text-blue-900 no-underline">
+                Olá, {user?.nome?.split(' ')[0]}
+              </Link>
+            )}
+
             <div className="pt-4 border-t border-neutral-100">
                 <p className="text-[10px] font-black text-neutral-400 uppercase tracking-widest mb-4">Categorias</p>
                 <div className="flex flex-wrap gap-2">
-                  {categorias.slice(0, 8).map(c => (
-                    <Link key={c} to={`/categoria/${c}`} onClick={() => setMenuOpen(false)} className="px-3 py-1 bg-neutral-100 rounded-lg text-xs font-bold text-neutral-600 no-underline">{c}</Link>
+                  {categorias.map(c => (
+                    <Link 
+                      key={c} 
+                      to={`/categoria/${c.toLowerCase().replaceAll(" ", "-")}`} 
+                      onClick={() => setMenuOpen(false)} 
+                      className="px-3 py-1 bg-neutral-100 rounded-lg text-xs font-bold text-neutral-600 no-underline"
+                    >
+                      {c}
+                    </Link>
                   ))}
                 </div>
             </div>
+
+            {isAuthenticated && (
+              <button 
+                onClick={() => { logout(); setMenuOpen(false); navigate("/"); }}
+                className="mt-4 flex items-center gap-2 text-red-500 font-bold uppercase text-xs tracking-widest"
+              >
+                <i className="fas fa-power-off"></i> Sair da Conta
+              </button>
+            )}
           </nav>
         </div>
       </aside>
