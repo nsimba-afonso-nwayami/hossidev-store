@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import "swiper/css";
@@ -10,331 +9,225 @@ import { useAuth } from "../../contexts/AuthContext";
 
 export default function Header() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { totalItems } = useCart();
+  const { user, isAuthenticated, logout } = useAuth();
 
   const [menuOpen, setMenuOpen] = useState(false);
-  const [searchOpen, setSearchOpen] = useState(false);
   const [categorias, setCategorias] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [resultados, setResultados] = useState([]);
   const [loadingSearch, setLoadingSearch] = useState(false);
-  const { user, isAuthenticated, logout } = useAuth();
+  const [scrolled, setScrolled] = useState(false);
 
-  // ====== Carregar categorias ======
+  // Controle de Scroll
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 10);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Carregar categorias
   useEffect(() => {
     async function carregarCategorias() {
       try {
         const data = await listarProdutos();
-        const categoriasUnicas = Array.from(
-          new Set(data.map((p) => p.categoria_nome)),
-        );
-        setCategorias(categoriasUnicas);
+        const únicas = Array.from(new Set(data.map((p) => p.categoria_nome)));
+        setCategorias(únicas);
       } catch (error) {
-        console.error("Erro ao carregar categorias:", error);
+        console.error("Erro categorias:", error);
       }
     }
     carregarCategorias();
   }, []);
 
-  const enableLoop = categorias.length > 5;
-
-  // ====== Busca produtos com debounce ======
+  // Busca com Debounce e Lógica de "Nenhum Resultado"
   useEffect(() => {
     if (!searchTerm.trim()) {
       setResultados([]);
       return;
     }
-
     const delayDebounceFn = setTimeout(async () => {
       setLoadingSearch(true);
       try {
         const data = await listarProdutos();
         const filtrados = data.filter((p) =>
-          p.descricao.toLowerCase().includes(searchTerm.toLowerCase()),
+          p.descricao.toLowerCase().includes(searchTerm.toLowerCase())
         );
         setResultados(filtrados.slice(0, 5));
-      } catch (error) {
-        console.error("Erro na busca de produtos:", error);
-        setResultados([]);
       } finally {
         setLoadingSearch(false);
       }
     }, 300);
-
     return () => clearTimeout(delayDebounceFn);
   }, [searchTerm]);
 
-  const getSlug = (descricao) =>
-    descricao.toLowerCase().replaceAll(" ", "-").replaceAll("/", "");
+  const getSlug = (desc) => desc.toLowerCase().replaceAll(" ", "-").replaceAll("/", "");
 
   return (
-    <header className="fixed top-0 left-0 w-full bg-neutral-900 border-b border-neutral-800 shadow-lg z-50">
-      {/* Topo principal */}
-      <div className="max-w-7xl mx-auto px-4 md:px-6 py-4 flex items-center justify-between gap-4">
-        <button
-          onClick={() => setMenuOpen(true)}
-          className="md:hidden text-neutral-50 text-xl"
-        >
-          <i className="fas fa-bars"></i>
-        </button>
-
-        <Link
-          to="/"
-          className="text-xl md:text-2xl font-extrabold tracking-wide text-neutral-50"
-        >
-          NWAYAMI <span className="text-orange-500">STORE</span>
+    <header className={`fixed top-0 left-0 w-full z-[100] transition-all duration-500 ${
+      scrolled ? "bg-neutral-50/80 backdrop-blur-lg shadow-md py-2" : "bg-neutral-50 py-4"
+    }`}>
+      
+      {/* Top Bar Principal */}
+      <div className="max-w-7xl mx-auto px-6 flex items-center justify-between gap-8">
+        
+        {/* Logo Branding */}
+        <Link to="/" className="flex flex-col leading-none group shrink-0 no-underline">
+          <span className="text-2xl font-[900] tracking-tighter text-neutral-700 group-hover:text-blue-900 transition-colors">
+            HOSSIDEV
+          </span>
+          <span className="text-[10px] font-bold tracking-[0.4em] text-blue-900 uppercase">
+            Store
+          </span>
         </Link>
 
-        {/* Input de pesquisa desktop */}
-        <div className="hidden md:block flex-1 max-w-xl">
-          <div className="relative z-50">
+        {/* Busca Desktop Premium */}
+        <div className="hidden md:block flex-1 max-w-lg relative">
+          <div className="relative group z-[110]">
+            <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+              <i className="fas fa-search text-neutral-400 group-focus-within:text-blue-900 transition-colors"></i>
+            </div>
             <input
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Pesquisar produtos..."
-              className="w-full bg-neutral-800 text-neutral-50 placeholder-neutral-400 px-4 py-2 rounded-lg border border-neutral-700 focus:outline-none focus:border-orange-500"
+              placeholder="O que você está procurando hoje?"
+              className="w-full bg-neutral-100 border border-transparent focus:bg-white focus:ring-4 focus:ring-blue-900/10 focus:border-blue-800 rounded-xl pl-12 pr-4 py-2.5 text-sm text-neutral-700 transition-all outline-none"
             />
-            <button className="absolute right-3 top-1/2 -translate-y-1/2 text-orange-500">
-              <i className="fas fa-search"></i>
-            </button>
-
-            {searchTerm && (
-              <div className="absolute mt-2 w-full bg-neutral-900 border border-neutral-700 rounded-lg shadow-lg z-999">
-                {loadingSearch ? (
-                  <div className="px-4 py-2 text-neutral-400 text-sm flex items-center gap-2">
-                    <i className="fas fa-spinner fa-spin"></i> Carregando
-                    produtos...
-                  </div>
-                ) : resultados.length > 0 ? (
-                  resultados.map((produto) => (
-                    <Link
-                      key={produto.id}
-                      to={`/produtos/${getSlug(produto.descricao)}`}
-                      className="block px-4 py-2 hover:bg-neutral-800 text-neutral-50 text-sm"
-                      onClick={() => {
-                        setSearchTerm("");
-                        setResultados([]);
-                        setSearchOpen(false);
-                      }}
-                    >
-                      {produto.descricao}
-                    </Link>
-                  ))
-                ) : (
-                  <div className="px-4 py-2 text-neutral-400 text-sm">
-                    Nenhum produto encontrado
-                  </div>
-                )}
-              </div>
-            )}
           </div>
-        </div>
 
-        {/* Ações */}
-        <div className="flex items-center gap-4 text-neutral-50 text-xl">
-          <button
-            onClick={() => setSearchOpen(!searchOpen)}
-            className="md:hidden hover:text-orange-500 transition-colors"
-          >
-            <i className="fas fa-search"></i>
-          </button>
-
-          {isAuthenticated ? (
-            <div className="flex items-center gap-3">
-              {/* Nome do usuário */}
-              <Link
-                to="/dashboard/cliente"
-                className="hidden md:block text-sm font-semibold hover:text-orange-500 transition-colors"
-              >
-                Olá, {user?.username || user?.nome}
-              </Link>
-
-              {/* Ícone logout */}
-              <button
-                onClick={() => {
-                  logout();
-                  navigate("/");
-                }}
-                className="cursor-pointer hover:text-orange-500 transition-colors"
-                title="Terminar sessão"
-              >
-                <i className="fas fa-sign-out-alt"></i>
-              </button>
-            </div>
-          ) : (
-            <Link
-              to="/login"
-              className="hover:text-orange-500 transition-colors"
-            >
-              <i className="fas fa-user"></i>
-            </Link>
-          )}
-
-          <Link
-            to="/carrinho"
-            className="relative hover:text-orange-500 transition-colors"
-          >
-            <i className="fas fa-shopping-cart"></i>
-            <span className="absolute -top-2 -right-2 bg-orange-500 text-neutral-50 text-xs w-5 h-5 flex items-center justify-center rounded-full">
-              {totalItems}
-            </span>
-          </Link>
-        </div>
-      </div>
-
-      {/* Input pesquisa mobile */}
-      <div
-        className={`md:hidden transition-all duration-300 ${searchOpen ? "max-h-96 opacity-100 pb-4" : "max-h-0 opacity-0"}`}
-      >
-        <div className="px-4 relative z-50">
-          <input
-            type="text"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Pesquisar produtos..."
-            className="w-full bg-neutral-800 text-neutral-50 placeholder-neutral-400 px-4 py-3 rounded-lg border border-neutral-700 focus:outline-none focus:border-orange-500"
-          />
-
+          {/* Dropdown de Resultados (Corrigido Z-index e Vazio) */}
           {searchTerm && (
-            <div className="absolute mt-2 w-full bg-neutral-900 border border-neutral-700 rounded-lg shadow-lg z-999">
+            <div className="absolute top-full left-0 mt-3 w-full bg-white rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] border border-neutral-100 overflow-hidden z-[120] animate-in fade-in slide-in-from-top-2">
               {loadingSearch ? (
-                <div className="px-4 py-2 text-neutral-400 text-sm flex items-center gap-2">
-                  <i className="fas fa-spinner fa-spin"></i> Carregando
-                  produtos...
+                <div className="p-4 text-center text-sm text-neutral-500">
+                  <i className="fas fa-spinner fa-spin mr-2 text-blue-900"></i> Buscando...
                 </div>
               ) : resultados.length > 0 ? (
-                resultados.map((produto) => (
+                resultados.map((p) => (
                   <Link
-                    key={produto.id}
-                    to={`/produtos/${getSlug(produto.descricao)}`}
-                    className="block px-4 py-2 hover:bg-neutral-800 text-neutral-50 text-sm"
-                    onClick={() => {
-                      setSearchTerm("");
-                      setResultados([]);
-                      setSearchOpen(false);
-                    }}
+                    key={p.id}
+                    to={`/produtos/${getSlug(p.descricao)}`}
+                    className="flex items-center p-4 hover:bg-neutral-50 border-b border-neutral-50 last:border-none transition-colors no-underline"
+                    onClick={() => setSearchTerm("")}
                   >
-                    {produto.descricao}
+                    <div className="w-8 h-8 bg-neutral-100 rounded flex items-center justify-center mr-3 text-blue-900">
+                      <i className="fas fa-box-open text-xs"></i>
+                    </div>
+                    <span className="text-sm font-semibold text-neutral-700">{p.descricao}</span>
                   </Link>
                 ))
               ) : (
-                <div className="px-4 py-2 text-neutral-400 text-sm">
-                  Nenhum produto encontrado
+                <div className="p-6 text-center">
+                  <p className="text-sm text-neutral-400 font-medium italic">
+                    Nenhum produto encontrado para "{searchTerm}"
+                  </p>
                 </div>
               )}
             </div>
           )}
         </div>
-      </div>
 
-      {/* Slider categorias */}
-      <div className="bg-neutral-800 border-t border-neutral-700">
-        <div className="max-w-7xl mx-auto px-4 py-3">
-          <Swiper
-            modules={[Autoplay]}
-            spaceBetween={12}
-            slidesPerView={"auto"}
-            autoplay={{ delay: 2000, disableOnInteraction: false }}
-            loop={enableLoop}
-          >
-            {categorias.map((cat, index) => (
-              <SwiperSlide key={index} style={{ width: "auto" }}>
-                <Link
-                  to={`/categoria/${cat.toLowerCase().replaceAll(" ", "-")}`}
-                  className="whitespace-nowrap px-4 py-2 bg-neutral-900 text-neutral-50 rounded-lg border border-neutral-700 hover:border-orange-500 hover:text-orange-500 transition-colors text-sm font-semibold"
-                >
-                  {cat}
+        {/* Ações do Usuário */}
+        <div className="flex items-center gap-2 md:gap-5">
+          {isAuthenticated ? (
+            <div className="hidden md:flex items-center gap-3 pr-4 border-r border-neutral-200">
+              <div className="text-right leading-tight">
+                <p className="text-[10px] font-bold text-neutral-400 uppercase tracking-tighter">Conta</p>
+                <Link to="/dashboard/cliente" className="text-sm font-bold text-neutral-700 hover:text-blue-900 no-underline">
+                  {user?.nome?.split(' ')[0]}
                 </Link>
-              </SwiperSlide>
-            ))}
-          </Swiper>
+              </div>
+              <button onClick={() => { logout(); navigate("/"); }} className="w-9 h-9 rounded-full bg-neutral-100 flex items-center justify-center text-neutral-500 hover:bg-red-50 hover:text-red-500 transition-all">
+                <i className="fas fa-power-off text-sm"></i>
+              </button>
+            </div>
+          ) : (
+            <Link to="/login" className="hidden md:flex items-center gap-2 text-sm font-bold text-neutral-700 hover:text-blue-900 transition-colors uppercase tracking-widest text-[11px] no-underline">
+              <i className="far fa-user-circle text-lg"></i> Entrar
+            </Link>
+          )}
+
+          {/* Carrinho Floating */}
+          <Link to="/carrinho" className="relative w-11 h-11 flex items-center justify-center bg-blue-900 text-neutral-50 rounded-xl hover:bg-blue-800 shadow-lg shadow-blue-900/30 transition-all active:scale-95">
+            <i className="fas fa-shopping-bag text-lg"></i>
+            {totalItems > 0 && (
+              <span className="absolute -top-1.5 -right-1.5 bg-neutral-50 text-blue-900 text-[10px] font-black w-5 h-5 flex items-center justify-center rounded-full border-2 border-blue-900 animate-bounce">
+                {totalItems}
+              </span>
+            )}
+          </Link>
+
+          <button onClick={() => setMenuOpen(true)} className="md:hidden text-neutral-700 p-2">
+            <i className="fas fa-bars-staggered text-2xl"></i>
+          </button>
         </div>
       </div>
 
-      {/* Menu (único, adaptativo) */}
-      <nav>
-        {/* Desktop */}
-        <div className="hidden md:flex bg-neutral-900 border-t border-neutral-800">
-          <div className="max-w-7xl mx-auto px-6 py-3 flex flex-row items-center gap-6">
-            <Link
-              to="/"
-              className="uppercase text-neutral-50 hover:text-orange-500 transition-colors text-sm font-semibold"
+      {/* Navegação e Categorias */}
+      <div className="max-w-7xl mx-auto px-6 mt-4 relative z-10">
+        <div className="flex flex-col md:flex-row items-center gap-6 border-t border-neutral-100 pt-4">
+          
+          {/* Links Principais */}
+          <nav className="hidden md:flex items-center gap-8 border-r border-neutral-200 pr-8 shrink-0">
+            {["Início", "Produtos", "Sobre", "Contato"].map((item) => (
+              <Link 
+                key={item} 
+                to={item === "Início" ? "/" : `/${item.toLowerCase()}`}
+                className="text-xs uppercase font-bold tracking-[0.2em] text-neutral-500 hover:text-blue-900 transition-colors no-underline"
+              >
+                {item}
+              </Link>
+            ))}
+          </nav>
+
+          {/* Slider de Categorias Estilizado */}
+          <div className="w-full overflow-hidden">
+            <Swiper
+              modules={[Autoplay]}
+              spaceBetween={10}
+              slidesPerView={"auto"}
+              autoplay={{ delay: 3000 }}
+              loop={categorias.length > 6}
+              className="categories-swiper"
             >
-              Home
-            </Link>
-            <Link
-              to="/produtos"
-              className="uppercase text-neutral-50 hover:text-orange-500 transition-colors text-sm font-semibold"
-            >
-              Produtos
-            </Link>
-            <Link
-              to="/sobre"
-              className="uppercase text-neutral-50 hover:text-orange-500 transition-colors text-sm font-semibold"
-            >
-              Sobre
-            </Link>
-            <Link
-              to="/contato"
-              className="uppercase text-neutral-50 hover:text-orange-500 transition-colors text-sm font-semibold"
-            >
-              Contato
-            </Link>
+              {categorias.map((cat, i) => (
+                <SwiperSlide key={i} style={{ width: "auto" }}>
+                  <Link
+                    to={`/categoria/${cat.toLowerCase().replaceAll(" ", "-")}`}
+                    className="inline-block px-4 py-1.5 bg-neutral-100 text-neutral-600 rounded-full text-[11px] font-bold uppercase tracking-tighter border border-transparent hover:border-blue-900 hover:bg-white hover:text-blue-900 transition-all no-underline"
+                  >
+                    {cat}
+                  </Link>
+                </SwiperSlide>
+              ))}
+            </Swiper>
           </div>
         </div>
+      </div>
 
-        {/* Mobile (lateral deslizante) */}
-        <div
-          onClick={() => setMenuOpen(false)}
-          className={`fixed inset-0 bg-black/50 z-40 transition-opacity md:hidden ${menuOpen ? "opacity-100 visible" : "opacity-0 invisible"}`}
-        />
-
-        <aside
-          className={`fixed top-0 left-0 h-full w-72 bg-neutral-900 z-50 transform transition-transform duration-300 md:hidden ${menuOpen ? "translate-x-0" : "-translate-x-full"}`}
-        >
-          <div className="p-6 border-b border-neutral-800 flex justify-between items-center">
-            <span className="text-xl font-bold text-neutral-50">Menu</span>
-            <button
-              onClick={() => setMenuOpen(false)}
-              className="text-neutral-50 text-xl"
-            >
-              <i className="fas fa-times"></i>
-            </button>
+      {/* Menu Mobile Overlay */}
+      <aside className={`fixed inset-0 bg-neutral-900/60 backdrop-blur-sm z-[200] transition-all duration-500 md:hidden ${menuOpen ? "opacity-100 visible" : "opacity-0 invisible"}`}>
+        <div className={`absolute left-0 top-0 h-full w-[80%] bg-white shadow-2xl transition-transform duration-500 ${menuOpen ? "translate-x-0" : "-translate-x-full"}`}>
+          <div className="p-6 border-b border-neutral-100 flex justify-between items-center">
+            <span className="font-black text-blue-900 tracking-tighter">HOSSIDEV STORE</span>
+            <button onClick={() => setMenuOpen(false)} className="text-neutral-400 text-2xl"><i className="fas fa-times"></i></button>
           </div>
-
-          <nav className="flex flex-col p-6 gap-6">
-            <Link
-              to="/"
-              onClick={() => setMenuOpen(false)}
-              className="text-neutral-50 hover:text-orange-500 font-semibold"
-            >
-              Home
-            </Link>
-            <Link
-              to="/produtos"
-              onClick={() => setMenuOpen(false)}
-              className="text-neutral-50 hover:text-orange-500 font-semibold"
-            >
-              Produtos
-            </Link>
-            <Link
-              to="/sobre"
-              onClick={() => setMenuOpen(false)}
-              className="text-neutral-50 hover:text-orange-500 font-semibold"
-            >
-              Sobre
-            </Link>
-            <Link
-              to="/contato"
-              onClick={() => setMenuOpen(false)}
-              className="text-neutral-50 hover:text-orange-500 font-semibold"
-            >
-              Contato
-            </Link>
+          <nav className="p-8 flex flex-col gap-6">
+            <Link to="/" onClick={() => setMenuOpen(false)} className="text-2xl font-bold text-neutral-800 no-underline">Início</Link>
+            <Link to="/produtos" onClick={() => setMenuOpen(false)} className="text-2xl font-bold text-neutral-800 no-underline">Catálogo</Link>
+            <div className="pt-4 border-t border-neutral-100">
+                <p className="text-[10px] font-black text-neutral-400 uppercase tracking-widest mb-4">Categorias</p>
+                <div className="flex flex-wrap gap-2">
+                  {categorias.slice(0, 8).map(c => (
+                    <Link key={c} to={`/categoria/${c}`} onClick={() => setMenuOpen(false)} className="px-3 py-1 bg-neutral-100 rounded-lg text-xs font-bold text-neutral-600 no-underline">{c}</Link>
+                  ))}
+                </div>
+            </div>
           </nav>
-        </aside>
-      </nav>
+        </div>
+      </aside>
     </header>
   );
 }
