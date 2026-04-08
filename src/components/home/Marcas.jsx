@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay } from "swiper/modules";
+import { Autoplay, FreeMode } from "swiper/modules";
 import { listarProdutos } from "../../services/produtosService";
 import "swiper/css";
+import "swiper/css/free-mode";
 
 // IMAGENS DAS MARCAS
 import DellImg from "../../assets/img/dell.png";
@@ -20,14 +21,13 @@ import XiaomiImg from "../../assets/img/xiaomi.png";
 export default function Marcas() {
   const [marcas, setMarcas] = useState([]);
 
-  // Mapeamento nome -> imagem
   const imagensMarcas = {
     DELL: DellImg,
     HP: HpImg,
     KINGSTON: KingstonImg,
     LENOVO: LenovoImg,
     LOGITECH: LogiTechImg,
-    MICROSOFT : MicrosoftImg,
+    MICROSOFT: MicrosoftImg,
     SAMSUNG: SamsungImg,
     TOSHIBA: ToshibaImg,
     "WESTERN DIGITAL": WestwernDigitalImg,
@@ -38,46 +38,38 @@ export default function Marcas() {
     async function carregarMarcas() {
       try {
         const produtos = await listarProdutos();
-
-        // Extrair marcas únicas
         const marcasUnicas = [...new Set(produtos.map((p) => p.marca))];
-
-        // Filtrar apenas marcas que possuem imagem, com aviso das que não têm
-        const marcasComImagem = marcasUnicas.filter((marca) => {
-          if (!imagensMarcas[marca]) {
-            //console.warn("Marca sem imagem:", marca);
-            return false;
-          }
-          return true;
-        });
-
+        const marcasComImagem = marcasUnicas.filter((marca) => imagensMarcas[marca]);
         setMarcas(marcasComImagem);
       } catch (error) {
         console.error("Erro ao carregar marcas:", error);
       }
     }
-
     carregarMarcas();
   }, []);
 
   return (
-    <section className="w-full py-16 bg-neutral-50">
-      <div className="max-w-7xl mx-auto px-4">
-        <h2 className="text-2xl md:text-3xl font-bold text-neutral-800 mb-8">
-          Marcas Mais Pesquisadas
+    <section className="w-full py-16 bg-white border-t border-neutral-100">
+      <div className="max-w-7xl mx-auto px-6">
+        
+        {/* Título Direto e Sóbrio */}
+        <h2 className="text-xl md:text-2xl font-bold text-neutral-800 mb-12 tracking-tight">
+          Marcas em Destaque
         </h2>
 
         <Swiper
-          modules={[Autoplay]}
-          spaceBetween={20}
-          slidesPerView={3}
+          modules={[Autoplay, FreeMode]}
+          spaceBetween={40}
+          slidesPerView={2.5}
+          freeMode={true}
+          loop={true}
           breakpoints={{
-            640: { slidesPerView: 4 },
+            640: { slidesPerView: 3.5 },
             768: { slidesPerView: 5 },
             1024: { slidesPerView: 6 },
-            1280: { slidesPerView: 6 },
           }}
-          autoplay={{ delay: 2000, disableOnInteraction: false }}
+          autoplay={{ delay: 3000, disableOnInteraction: false }}
+          className="flex items-center"
         >
           {marcas.map((marca, index) => {
             const slug = marca.toLowerCase().replaceAll(" ", "-");
@@ -86,14 +78,14 @@ export default function Marcas() {
               <SwiperSlide key={index}>
                 <Link
                   to={`/marca/${slug}`}
-                  className="flex flex-col items-center justify-center p-6 bg-white rounded-lg shadow hover:shadow-lg transition"
+                  className="group flex flex-col items-center justify-center h-24 no-underline"
                 >
                   <img
                     src={imagensMarcas[marca]}
                     alt={marca}
-                    className="w-16 h-16 object-contain mb-3"
+                    className="max-h-10 md:max-h-12 w-auto object-contain grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300"
                   />
-                  <span className="text-sm font-semibold text-neutral-800 text-center">
+                  <span className="mt-4 text-[11px] font-bold text-neutral-400 group-hover:text-blue-900 uppercase tracking-widest transition-colors">
                     {marca}
                   </span>
                 </Link>
