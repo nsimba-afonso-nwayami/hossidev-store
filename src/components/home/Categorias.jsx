@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay } from "swiper/modules";
+import { Autoplay, FreeMode } from "swiper/modules";
 import { listarProdutos } from "../../services/produtosService";
 import "swiper/css";
+import "swiper/css/free-mode";
 
 // SUAS IMAGENS
 import EletrodomesticosImg from "../../assets/img/eletrodomesticos.png";
@@ -20,7 +21,6 @@ import SoftwareImg from "../../assets/img/software.png";
 export default function Categorias() {
   const [categorias, setCategorias] = useState([]);
 
-  // Mapeamento nome -> imagem
   const imagensCategorias = {
     Electrodomésticos: EletrodomesticosImg,
     Energia: EnergiaImg,
@@ -38,64 +38,57 @@ export default function Categorias() {
     async function carregarCategorias() {
       try {
         const data = await listarProdutos();
-
-        const categoriasUnicas = [
-          ...new Set(data.map((p) => p.categoria_nome)),
-        ];
-
-        //Filtrar apenas categorias que têm imagem definida
+        const categoriasUnicas = [...new Set(data.map((p) => p.categoria_nome))];
         const categoriasComImagem = categoriasUnicas.filter((categoria) => {
-          if (!imagensCategorias[categoria]) {
-            //console.warn("Categoria sem imagem:", categoria);
-            return false;
-          }
-          return true;
+          return !!imagensCategorias[categoria];
         });
-
         setCategorias(categoriasComImagem);
       } catch (error) {
         console.error("Erro ao carregar categorias:", error);
       }
     }
-
     carregarCategorias();
   }, []);
 
   return (
     <section className="w-full py-16 bg-white">
-      <div className="max-w-7xl mx-auto px-4">
-        <h2 className="text-2xl md:text-3xl font-bold text-neutral-800 mb-8">
-          Categorias
+      <div className="max-w-7xl mx-auto px-6">
+        
+        {/* Título Direto */}
+        <h2 className="text-xl md:text-2xl font-bold text-neutral-800 mb-12 tracking-tight">
+          Principais Categorias
         </h2>
 
         <Swiper
-          modules={[Autoplay]}
-          spaceBetween={20}
+          modules={[Autoplay, FreeMode]}
+          spaceBetween={24}
           slidesPerView={2}
+          freeMode={true}
           breakpoints={{
-            640: { slidesPerView: 3 },
-            768: { slidesPerView: 5 },
-            1024: { slidesPerView: 6 },
-            1280: { slidesPerView: 8 },
+            640: { slidesPerView: 2 },
+            768: { slidesPerView: 3 },
+            1024: { slidesPerView: 4 }, // 4 por slide no desktop
           }}
-          autoplay={{ delay: 2500, disableOnInteraction: false }}
+          autoplay={{ delay: 3500, disableOnInteraction: false }}
         >
           {categorias.map((categoria, index) => {
-            const slug = categoria.toLowerCase().replaceAll(" ", "-");
+            const slug = categoria.toLowerCase().replaceAll(" ", "-").replaceAll("/", "");
 
             return (
               <SwiperSlide key={index}>
                 <Link
                   to={`/categoria/${slug}`}
-                  className="flex flex-col items-center justify-center bg-neutral-100 rounded-xl p-6 hover:shadow-lg transition"
+                  className="group flex flex-col items-center justify-center bg-neutral-50 rounded-2xl p-8 border border-transparent hover:border-neutral-100 hover:bg-white hover:shadow-xl hover:shadow-neutral-200/40 transition-all duration-300 no-underline"
                 >
-                  <img
-                    src={imagensCategorias[categoria]}
-                    alt={categoria}
-                    className="w-16 h-16 object-contain mb-3"
-                  />
+                  <div className="relative w-16 h-16 mb-5 flex items-center justify-center">
+                    <img
+                      src={imagensCategorias[categoria]}
+                      alt={categoria}
+                      className="w-full h-full object-contain grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500"
+                    />
+                  </div>
 
-                  <span className="text-sm font-semibold text-neutral-800 text-center">
+                  <span className="text-[12px] font-bold text-neutral-500 group-hover:text-blue-900 text-center tracking-widest uppercase transition-colors">
                     {categoria}
                   </span>
                 </Link>
