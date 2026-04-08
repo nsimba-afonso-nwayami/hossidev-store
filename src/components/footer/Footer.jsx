@@ -26,7 +26,7 @@ export default function Footer() {
               <i className="far fa-envelope text-blue-900"></i> geral@hossidev.com
             </a>
             <span className="flex items-center gap-2 text-neutral-600">
-              <i className="fas fa-phone-alt text-blue-900"></i> (+244) 972 614 886
+              <i className="fas fa-phone text-blue-900"></i> (+244) 972 614 886
             </span>
           </div>
         </div>
