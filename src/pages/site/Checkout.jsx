@@ -332,7 +332,7 @@ export default function Checkout() {
                   {["multicaixa", "transferencia", "entrega"].map((metodo) => (
                     <label
                       key={metodo}
-                      className="flex items-center gap-3 border border-neutral-300 rounded-lg p-4 cursor-pointer hover:border-blue-900 transition-colors has-[:checked]:border-blue-900 has-[:checked]:bg-blue-50/30"
+                      className="flex items-center gap-3 border border-neutral-300 rounded-lg p-4 cursor-pointer hover:border-blue-900 transition-colors has-checked:border-blue-900 has-checked:bg-blue-50/30"
                     >
                       <input
                         type="radio"
