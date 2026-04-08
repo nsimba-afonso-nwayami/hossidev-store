@@ -1,175 +1,93 @@
 import { Link } from "react-router-dom";
 
 export default function Footer() {
+  const currentYear = new Date().getFullYear();
+
   return (
-    <footer className="bg-neutral-900 text-neutral-50 relative">
-      <div className="max-w-7xl mx-auto px-6 md:px-10 py-16 grid grid-cols-1 md:grid-cols-4 gap-8">
-        {/* Logo e descrição */}
-        <div className="md:col-span-1">
-          <h3 className="text-3xl font-bold text-orange-500 mb-4">
-            NWAYAMI STORE
-          </h3>
-          <p className="text-neutral-400 leading-relaxed">
+    <footer className="bg-neutral-50 text-neutral-700 border-t border-neutral-200 pt-16">
+      <div className="max-w-7xl mx-auto px-6 md:px-10 pb-16 grid grid-cols-1 md:grid-cols-12 gap-12">
+        
+        {/* Branding e Endereço */}
+        <div className="md:col-span-4 flex flex-col">
+          <Link to="/" className="flex flex-col leading-none mb-6 no-underline group">
+            <span className="text-2xl font-[900] tracking-tighter text-neutral-700 group-hover:text-blue-900 transition-colors">
+              HOSSIDEV
+            </span>
+            <span className="text-[10px] font-bold tracking-[0.4em] text-blue-900 uppercase">
+              Store
+            </span>
+          </Link>
+          <p className="text-neutral-500 text-sm leading-relaxed mb-6 max-w-sm">
             Centralidade do Kilamba, Quarteirão F, edifício F27, apartamento 91,
             Kilamba, Luanda - Angola
           </p>
-          <p className="text-neutral-400 mt-2">
-            <a
-              href="mailto:geral@nwayami.com"
-              className="hover:text-orange-500 transition"
-            >
-              geral@nwayami.com
+          <div className="flex flex-col gap-3 text-sm font-medium">
+            <a href="mailto:geral@hossidev.com" className="flex items-center gap-2 text-neutral-600 hover:text-blue-900 transition-colors no-underline">
+              <i className="far fa-envelope text-blue-900"></i> geral@hossidev.com
             </a>
-          </p>
-          <p className="text-neutral-400">(+244) 972 614 886 / 921 909 103</p>
+            <span className="flex items-center gap-2 text-neutral-600">
+              <i className="fas fa-phone-alt text-blue-900"></i> (+244) 972 614 886
+            </span>
+          </div>
         </div>
 
-        {/* Informações */}
-        <div>
-          <h4 className="text-xl font-semibold text-orange-500 mb-4">
-            INFORMAÇÕES
+        {/* Institucional - Sem <li> */}
+        <div className="md:col-span-2 flex flex-col gap-4">
+          <h4 className="text-[11px] font-black uppercase tracking-[0.2em] text-blue-900 mb-2">
+            Institucional
           </h4>
-          <ul className="space-y-2 text-neutral-400">
-            <li>
-              <Link
-                to="/politica-privacidade"
-                className="hover:text-orange-500 transition"
-              >
-                Politicas e Privacidade
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="https://nwayami.vercel.app"
-                className="hover:text-orange-500 transition"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Prestação de Serviços
-              </Link>
-            </li>
-            <li>
-              <Link to="/contato" className="hover:text-orange-500 transition">
-                Contactos
-              </Link>
-            </li>
-          </ul>
+          <Link to="/sobre" className="text-sm text-neutral-500 hover:text-blue-900 transition-colors no-underline">Sobre Nós</Link>
+          <Link to="/politica-privacidade" className="text-sm text-neutral-500 hover:text-blue-900 transition-colors no-underline">Privacidade</Link>
+          <Link to="/servicos" className="text-sm text-neutral-500 hover:text-blue-900 transition-colors no-underline">Serviços</Link>
+          <Link to="/contato" className="text-sm text-neutral-500 hover:text-blue-900 transition-colors no-underline">Contactos</Link>
         </div>
 
-        {/* Categorias com links */}
-        <div>
-          <h4 className="text-xl font-semibold text-orange-500 mb-4">
-            CATEGORIAS
+        {/* Categorias - Sem <li> */}
+        <div className="md:col-span-3 flex flex-col gap-4">
+          <h4 className="text-[11px] font-black uppercase tracking-[0.2em] text-blue-900 mb-2">
+            Categorias
           </h4>
-          <ul className="space-y-2 text-neutral-400">
-            <li>
-              <Link
-                to="/categoria/informatica-impressao"
-                className="hover:text-orange-500 transition"
-              >
-                Informática | Impressão
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/categoria/redes-internet-telecom"
-                className="hover:text-orange-500 transition"
-              >
-                Redes, Internet e Telecomunicações
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/categoria/energia-seguranca"
-                className="hover:text-orange-500 transition"
-              >
-                Energia | Segurança Electrónica
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/categoria/smartphones-tablets"
-                className="hover:text-orange-500 transition"
-              >
-                Smartphones, Tablets e Telemóveis
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/categoria/imagem-som"
-                className="hover:text-orange-500 transition"
-              >
-                Imagem e Som
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/categoria/electrodomesticos-software"
-                className="hover:text-orange-500 transition"
-              >
-                Electrodomésticos | Software
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/categoria/material-escritorio-escolar"
-                className="hover:text-orange-500 transition"
-              >
-                Material de Escritório e Escolar
-              </Link>
-            </li>
-          </ul>
+          <Link to="/categoria/informatica-impressao" className="text-sm text-neutral-500 hover:text-blue-900 transition-colors no-underline">Informática & Impressão</Link>
+          <Link to="/categoria/redes-internet-telecom" className="text-sm text-neutral-500 hover:text-blue-900 transition-colors no-underline">Redes & Internet</Link>
+          <Link to="/categoria/energia-seguranca" className="text-sm text-neutral-500 hover:text-blue-900 transition-colors no-underline">Segurança Eletrónica</Link>
+          <Link to="/categoria/smartphones-tablets" className="text-sm text-neutral-500 hover:text-blue-900 transition-colors no-underline">Smartphones & Tablets</Link>
         </div>
 
-        {/* Contatos */}
-        <div>
-          <h4 className="text-xl font-semibold text-orange-500 mb-4">
-            CONTACTOS
+        {/* Suporte Técnico */}
+        <div className="md:col-span-3">
+          <h4 className="text-[11px] font-black uppercase tracking-[0.2em] text-blue-900 mb-6">
+            Suporte Técnico
           </h4>
-          <p className="text-neutral-400">
-            <strong>Comerciais:</strong> (+244) 921 793 774
-            <br />
-            <a
-              href="mailto:geral@nwayami.com"
-              className="hover:text-orange-500 transition"
-            >
-              geral@nwayami.com
+          <div className="bg-neutral-100 rounded-2xl p-6">
+            <p className="text-xs font-bold text-neutral-400 uppercase tracking-tighter mb-1">Horário</p>
+            <p className="text-sm font-bold text-neutral-700 mb-4">Seg - Sex: 08h às 17h</p>
+            
+            <p className="text-xs font-bold text-neutral-400 uppercase tracking-tighter mb-1">WhatsApp</p>
+            <a href="tel:+244921791707" className="text-sm font-black text-blue-900 hover:underline no-underline">
+              (+244) 921 791 707
             </a>
-          </p>
-          <p className="text-neutral-400 mt-3">
-            <strong>Assistência Técnica:</strong> (+244) 921 791 707 / 921 902
-            078
-            <br />
-            <a
-              href="mailto:suporte@nwayami.com"
-              className="hover:text-orange-500 transition"
-            >
-              suporte@nwayami.com
-            </a>
-          </p>
-          <p className="text-neutral-400 mt-3">
-            <strong>Horário de Atendimento:</strong>
-            <br />
-            Segunda - Sexta, 08:00h - 17:00h
-          </p>
+          </div>
         </div>
       </div>
 
-      {/* Divisor */}
-      <div className="border-t border-neutral-800"></div>
-
-      {/* Créditos */}
-      <div className="max-w-7xl mx-auto px-6 md:px-10 py-6 flex flex-col md:flex-row justify-between items-center text-neutral-400 text-sm">
-        <p>
-          &copy; {new Date().getFullYear()} NWAYAMI STORE. Todos os direitos
-          reservados.
-        </p>
-        <Link
-          to="/contato"
-          className="mt-4 md:mt-0 inline-block bg-orange-500 text-neutral-50 px-6 py-2 rounded-lg font-semibold hover:bg-orange-600 transition"
-        >
-          Contato
-        </Link>
+      {/* Footer Bottom */}
+      <div className="bg-neutral-100 py-8">
+        <div className="max-w-7xl mx-auto px-6 md:px-10 flex flex-col md:flex-row justify-between items-center gap-6">
+          <div className="text-xs text-neutral-500 font-medium">
+            &copy; {currentYear} <span className="font-bold text-neutral-700">HOSSIDEV STORE</span>. 
+            Todos os direitos reservados.
+          </div>
+          
+          <div className="flex items-center gap-6">
+            <div className="flex items-center gap-3 text-neutral-400 text-lg">
+              <i className="fab fa-cc-visa"></i>
+              <i className="fab fa-cc-mastercard"></i>
+            </div>
+            <Link to="/contato" className="text-[10px] font-black uppercase tracking-widest bg-blue-900 text-white px-6 py-2.5 rounded-full hover:bg-blue-800 transition-all shadow-lg shadow-blue-900/10 no-underline">
+              Falar Conosco
+            </Link>
+          </div>
+        </div>
       </div>
     </footer>
   );
