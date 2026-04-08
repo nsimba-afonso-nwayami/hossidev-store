@@ -21,13 +21,11 @@ export default function MeusPedidos() {
         setLoading(false);
       }
     }
-
     carregarPedidos();
   }, []);
 
   const pedidosFiltrados = pedidos.filter((item) => {
     if (!busca) return true;
-
     return (
       String(item.id).includes(busca) ||
       (item.produto?.nome || "").toLowerCase().includes(busca.toLowerCase())
@@ -47,9 +45,9 @@ export default function MeusPedidos() {
   if (loading) {
     return (
       <ClienteLayout title="Meus Pedidos">
-        <section className="w-full bg-neutral-100 py-16 pt-47 text-center">
-          <i className="fas fa-spinner fa-spin text-3xl text-orange-500 mb-3"></i>
-          <p className="text-neutral-600">Carregando...</p>
+        <section className="w-full py-32 text-center">
+          <i className="fas fa-spinner fa-spin text-3xl text-blue-900 mb-4"></i>
+          <p className="text-[10px] font-black text-neutral-400 uppercase tracking-widest">Sincronizando Histórico...</p>
         </section>
       </ClienteLayout>
     );
@@ -57,67 +55,76 @@ export default function MeusPedidos() {
 
   return (
     <>
-      <title>Meus Pedidos | Nwayami Store</title>
+      <title>Meus Pedidos | HOSSIDEV Store</title>
 
-      <ClienteLayout title="Meus Pedidos">
-        {/* BUSCA */}
-        <section className="bg-white p-6 rounded-xl shadow-sm mb-6">
+      <ClienteLayout title="Histórico de Compras">
+        {/* FILTRO DE BUSCA PREMIUM */}
+        <section className="bg-white p-2 rounded-2xl shadow-sm border border-neutral-100 mb-8 flex items-center">
+          <div className="pl-4 text-neutral-400">
+            <i className="fas fa-search"></i>
+          </div>
           <input
             type="text"
-            placeholder="Buscar por número do pedido ou produto..."
+            placeholder="Pesquisar por ID do pedido ou nome do item..."
             value={busca}
             onChange={(e) => setBusca(e.target.value)}
-            className="p-3 rounded-lg border border-neutral-300 focus:outline-none focus:ring-2 focus:ring-orange-500 w-full"
+            className="p-4 bg-transparent focus:outline-none w-full text-sm font-medium text-neutral-600"
           />
         </section>
 
-        {/* LISTA */}
-        <section className="flex flex-col gap-4">
+        {/* LISTAGEM INDUSTRIAL */}
+        <section className="space-y-4">
           {pedidosFiltrados.length === 0 ? (
-            <div className="bg-white p-6 rounded-xl shadow-sm text-center text-neutral-500">
-              Nenhum pedido encontrado.
+            <div className="bg-white p-12 rounded-3xl border border-neutral-100 text-center">
+              <i className="fas fa-box-open text-4xl text-neutral-100 mb-4"></i>
+              <p className="text-sm font-bold text-neutral-400 uppercase tracking-tighter">
+                Nenhum registro encontrado na sua conta.
+              </p>
             </div>
           ) : (
             pedidosFiltrados.map((item) => (
               <div
                 key={item.id}
-                className="bg-neutral-50 border border-neutral-200 rounded-xl p-5 shadow-sm hover:shadow-md transition"
+                className="bg-white border border-neutral-100 rounded-2xl p-6 shadow-sm hover:border-blue-900/30 transition-all group"
               >
-                <div className="flex justify-between items-center mb-2">
-                  <div>
-                    <p className="font-semibold text-neutral-900">
-                      Pedido #{item.id}
-                    </p>
-                    <p className="text-neutral-500 text-sm">
-                      {item.produto?.nome || "Produto"}
-                    </p>
+                <div className="flex flex-wrap justify-between items-start gap-4">
+                  <div className="flex gap-4">
+                    <div className="w-14 h-14 bg-neutral-50 rounded-xl flex items-center justify-center text-blue-900 border border-neutral-100 group-hover:bg-blue-900 group-hover:text-white transition-all">
+                      <i className="fas fa-receipt text-xl"></i>
+                    </div>
+                    <div>
+                      <p className="text-[10px] font-black text-neutral-400 uppercase tracking-widest">Identificador</p>
+                      <h4 className="font-black text-neutral-700 uppercase leading-none">
+                        Pedido #{item.id.toString().padStart(5, '0')}
+                      </h4>
+                      <p className="text-sm font-bold text-blue-900 mt-1">
+                        {item.produto?.nome || "Pacote de Itens Diversos"}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-8">
+                    <div className="text-right">
+                      <p className="text-[10px] font-black text-neutral-400 uppercase tracking-widest">Emissão</p>
+                      <p className="text-sm font-bold text-neutral-600">
+                        {item.criado_em ? new Date(item.criado_em).toLocaleDateString() : "-"}
+                      </p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-[10px] font-black text-neutral-400 uppercase tracking-widest">Investimento</p>
+                      <p className="text-sm font-black text-neutral-700">
+                        {item.total ? `${Number(item.total).toLocaleString()} AKZ` : "Kz 0,00"}
+                      </p>
+                    </div>
                   </div>
                 </div>
 
-                <p className="text-neutral-600 text-sm">
-                  Data:{" "}
-                  <strong>
-                    {item.criado_em
-                      ? new Date(item.criado_em).toLocaleDateString()
-                      : "-"}
-                  </strong>
-                </p>
-
-                <p className="text-neutral-600 text-sm">
-                  Valor:{" "}
-                  <strong>
-                    {item.total
-                      ? `${Number(item.total).toLocaleString()} AKZ`
-                      : "-"}
-                  </strong>
-                </p>
-
-                <div className="flex justify-end items-center mt-4">
+                <div className="flex justify-end items-center mt-6 pt-4 border-t border-neutral-50">
                   <button
                     onClick={() => abrirDetalhes(item)}
-                    className="text-orange-500 hover:text-orange-600 cursor-pointer flex items-center gap-1 text-sm font-semibold"
+                    className="flex items-center gap-2 text-[10px] font-black text-blue-900 uppercase tracking-widest hover:gap-4 transition-all cursor-pointer"
                   >
-                    <i className="fas fa-eye"></i> Ver Detalhes
+                    Analisar Detalhes <i className="fas fa-chevron-right"></i>
                   </button>
                 </div>
               </div>
@@ -125,57 +132,51 @@ export default function MeusPedidos() {
           )}
         </section>
 
-        {/* MODAL DETALHES */}
+        {/* MODAL DETALHES PERSONALIZADO */}
         <Modal
           isOpen={openDetalhes}
           onClose={() => setOpenDetalhes(false)}
-          title="Detalhes do Pedido"
-          icon="fas fa-box"
+          title="Ficha do Pedido"
+          icon="fas fa-file-invoice"
         >
           {pedidoSelecionado && (
-            <div className="max-w-3xl mx-auto space-y-6">
-              <div className="bg-orange-500/10 border border-orange-500/30 rounded-xl p-6">
-                <h2 className="text-xl font-bold text-neutral-800">
+            <div className="space-y-6">
+              <div className="bg-blue-900 p-8 rounded-2xl text-white relative overflow-hidden">
+                <i className="fas fa-box-check absolute -right-4 -bottom-4 text-8xl opacity-10"></i>
+                <p className="text-[10px] font-black uppercase tracking-[0.3em] opacity-60">Status: Concluído</p>
+                <h3 className="text-2xl font-black uppercase tracking-tighter mt-1">
                   Pedido #{pedidoSelecionado.id}
-                </h2>
-                <p className="text-neutral-500">Detalhes do pedido</p>
+                </h3>
               </div>
 
-              <div className="bg-white border border-neutral-200 rounded-xl p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <p className="text-sm text-neutral-500">Número do Pedido</p>
-                  <p className="font-semibold text-neutral-800">
-                    {pedidoSelecionado.id}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="bg-neutral-50 p-5 rounded-xl border border-neutral-100">
+                  <p className="text-[10px] font-black text-neutral-400 uppercase tracking-widest mb-1">Data da Transação</p>
+                  <p className="font-bold text-neutral-700">
+                    {pedidoSelecionado.criado_em ? new Date(pedidoSelecionado.criado_em).toLocaleString() : "-"}
                   </p>
                 </div>
 
-                <div>
-                  <p className="text-sm text-neutral-500">Data</p>
-                  <p className="font-semibold text-neutral-800">
-                    {pedidoSelecionado.criado_em
-                      ? new Date(pedidoSelecionado.criado_em).toLocaleString()
-                      : "-"}
-                  </p>
-                </div>
-
-                <div>
-                  <p className="text-sm text-neutral-500">Valor Total</p>
-                  <p className="font-semibold text-neutral-800">
-                    {pedidoSelecionado.total
-                      ? `${Number(
-                          pedidoSelecionado.total,
-                        ).toLocaleString()} AKZ`
-                      : "-"}
+                <div className="bg-neutral-50 p-5 rounded-xl border border-neutral-100">
+                  <p className="text-[10px] font-black text-neutral-400 uppercase tracking-widest mb-1">Montante Total</p>
+                  <p className="font-black text-blue-900 text-lg">
+                    {pedidoSelecionado.total ? `${Number(pedidoSelecionado.total).toLocaleString()} AKZ` : "-"}
                   </p>
                 </div>
               </div>
 
-              <div className="flex justify-end">
+              <div className="p-6 border-2 border-dashed border-neutral-100 rounded-2xl">
+                 <p className="text-center text-[11px] font-bold text-neutral-400 uppercase italic">
+                    Obrigado por confiar na infraestrutura HOSSIDEV.
+                 </p>
+              </div>
+
+              <div className="flex justify-end pt-4">
                 <button
                   onClick={() => setOpenDetalhes(false)}
-                  className="px-6 py-2 bg-neutral-200 hover:bg-neutral-300 text-neutral-800 rounded-lg cursor-pointer"
+                  className="px-8 py-3 bg-neutral-900 text-white text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-blue-900 transition-colors cursor-pointer shadow-lg shadow-neutral-900/20"
                 >
-                  Fechar
+                  Fechar Relatório
                 </button>
               </div>
             </div>

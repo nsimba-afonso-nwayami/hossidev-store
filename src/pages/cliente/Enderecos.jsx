@@ -36,18 +36,16 @@ export default function Enderecos() {
         setEnderecos(data || []);
       } catch (error) {
         console.error("Erro ao carregar endereços:", error);
-        toast.error("Erro ao carregar endereços.");
+        toast.error("Falha na sincronização de endereços.");
       } finally {
         setLoading(false);
       }
     }
-
     carregar();
   }, []);
 
   const enderecosFiltrados = enderecos.filter((item) => {
     if (!busca) return true;
-
     return (
       item.rua?.toLowerCase().includes(busca.toLowerCase()) ||
       item.cidade?.toLowerCase().includes(busca.toLowerCase()) ||
@@ -58,74 +56,59 @@ export default function Enderecos() {
 
   const abrirModal = (endereco = null) => {
     setEnderecoSelecionado(endereco);
-
-    if (endereco) {
-      reset({
-        rua: endereco.rua || "",
-        cidade: endereco.cidade || "",
-        provincia: endereco.provincia || "",
-        codigo_postal: endereco.codigo_postal || "",
-        pais: endereco.pais || "",
-      });
-    } else {
-      reset({
-        rua: "",
-        cidade: "",
-        provincia: "",
-        codigo_postal: "",
-        pais: "",
-      });
-    }
-
+    const valoresIniciais = {
+      rua: endereco?.rua || "",
+      cidade: endereco?.cidade || "",
+      provincia: endereco?.provincia || "",
+      codigo_postal: endereco?.codigo_postal || "",
+      pais: endereco?.pais || "",
+    };
+    reset(valoresIniciais);
     setOpenModal(true);
   };
 
   const salvarEndereco = async (data) => {
     setSaving(true);
     const toastId = toast.loading(
-      enderecoSelecionado ? "Atualizando endereço..." : "Salvando endereço...",
+      enderecoSelecionado ? "Atualizando registro..." : "Criando novo registro...",
     );
 
     try {
       if (enderecoSelecionado) {
         await atualizarEndereco(enderecoSelecionado.id, data);
-        toast.success("Endereço atualizado com sucesso!", { id: toastId });
+        toast.success("Endereço atualizado!", { id: toastId });
       } else {
         await criarEndereco(data);
-        toast.success("Endereço criado com sucesso!", { id: toastId });
+        toast.success("Endereço registrado!", { id: toastId });
       }
-
       const novos = await listarEnderecos();
       setEnderecos(novos || []);
       setOpenModal(false);
     } catch (error) {
-      console.error("Erro ao salvar endereço:", error);
-      toast.error("Erro ao salvar endereço. Tente novamente.", { id: toastId });
+      toast.error("Erro na operação de salvamento.", { id: toastId });
     } finally {
       setSaving(false);
     }
   };
 
   const excluirEndereco = async (id) => {
-    if (!window.confirm("Deseja remover este endereço?")) return;
-
+    if (!window.confirm("Confirmar a exclusão deste endereço?")) return;
     try {
       await removerEndereco(id);
       const data = await listarEnderecos();
       setEnderecos(data || []);
-      toast.success("Endereço removido com sucesso!");
+      toast.success("Endereço removido.");
     } catch (error) {
-      console.error("Erro ao remover endereço:", error);
       toast.error("Erro ao remover endereço.");
     }
   };
 
   if (loading) {
     return (
-      <ClienteLayout title="Meus Endereços">
-        <section className="w-full bg-neutral-100 py-16 pt-47 text-center">
-          <i className="fas fa-spinner fa-spin text-3xl text-orange-500 mb-3"></i>
-          <p className="text-neutral-600">Carregando...</p>
+      <ClienteLayout title="Endereços">
+        <section className="w-full py-32 text-center">
+          <i className="fas fa-spinner fa-spin text-3xl text-blue-900 mb-4"></i>
+          <p className="text-[10px] font-black text-neutral-400 uppercase tracking-[0.2em]">Localizando Dados...</p>
         </section>
       </ClienteLayout>
     );
@@ -133,68 +116,87 @@ export default function Enderecos() {
 
   return (
     <>
-      <title>Meus Endereços | Dashboard Cliente</title>
+      <title>Endereços | HOSSIDEV Store</title>
 
-      <ClienteLayout title="Meus Endereços">
-        <div className="flex justify-end mb-6">
+      <ClienteLayout title="Gestão de Localidades">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+          <div className="relative w-full md:max-w-md">
+            <i className="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-neutral-400"></i>
+            <input
+              type="text"
+              placeholder="Filtrar por rua, cidade ou país..."
+              value={busca}
+              onChange={(e) => setBusca(e.target.value)}
+              className="w-full pl-12 pr-4 py-4 bg-white rounded-2xl border border-neutral-100 focus:border-blue-900/20 focus:outline-none text-sm font-medium shadow-sm transition-all"
+            />
+          </div>
+          
           <button
             onClick={() => abrirModal()}
-            className="px-5 py-3 cursor-pointer bg-orange-500 hover:bg-orange-600 text-white rounded-lg font-semibold flex items-center gap-2"
+            className="w-full md:w-auto px-8 py-4 cursor-pointer bg-blue-900 hover:bg-blue-800 text-neutral-50 rounded-2xl font-black text-[11px] uppercase tracking-widest flex items-center justify-center gap-3 shadow-lg shadow-blue-900/20 transition-all active:scale-95"
           >
-            <i className="fas fa-plus"></i> Novo Endereço
+            <i className="fas fa-plus-circle text-sm"></i> Novo Endereço
           </button>
         </div>
 
-        <section className="bg-white p-6 rounded-xl shadow-sm mb-6">
-          <input
-            type="text"
-            placeholder="Buscar por rua, cidade, província ou país..."
-            value={busca}
-            onChange={(e) => setBusca(e.target.value)}
-            className="p-3 rounded-lg border border-neutral-300 focus:outline-none focus:ring-2 focus:ring-orange-500 w-full"
-          />
-        </section>
-
         {enderecosFiltrados.length === 0 ? (
-          <div className="bg-white p-6 rounded-xl shadow-sm text-center text-neutral-500">
-            Endereços não encontrados.
+          <div className="bg-white p-20 rounded-3xl border border-neutral-100 text-center">
+            <i className="fas fa-map-location-dot text-5xl text-neutral-100 mb-6"></i>
+            <p className="text-sm font-black text-neutral-400 uppercase tracking-widest">
+              Nenhuma localidade registrada.
+            </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {enderecosFiltrados.map((endereco) => (
               <div
                 key={endereco.id}
-                className="bg-white p-6 rounded-xl shadow-sm border border-orange-200 hover:shadow-md transition"
+                className="bg-white p-8 rounded-3xl border border-neutral-100 shadow-sm hover:shadow-md transition-all relative group"
               >
-                <div className="flex justify-between items-start mb-4">
-                  <h3 className="text-lg font-bold text-neutral-900">
-                    {endereco.rua}
-                  </h3>
-
-                  <div className="flex gap-3">
+                <div className="flex justify-between items-start mb-6">
+                  <div className="w-12 h-12 bg-neutral-50 rounded-xl flex items-center justify-center text-blue-900 border border-neutral-100 group-hover:bg-blue-900 group-hover:text-white transition-all">
+                    <i className="fas fa-map-pin"></i>
+                  </div>
+                  
+                  <div className="flex gap-2">
                     <button
                       onClick={() => abrirModal(endereco)}
-                      className="text-orange-500 cursor-pointer hover:text-orange-600 text-sm flex items-center gap-1"
+                      className="w-9 h-9 flex items-center justify-center rounded-lg bg-neutral-50 text-neutral-400 hover:text-blue-900 hover:bg-blue-50 transition-all cursor-pointer"
+                      title="Editar"
                     >
-                      <i className="fas fa-edit"></i> Editar
+                      <i className="fas fa-pen-to-square"></i>
                     </button>
-
                     <button
                       onClick={() => excluirEndereco(endereco.id)}
-                      className="text-red-500 cursor-pointer hover:text-red-600 text-sm flex items-center gap-1"
+                      className="w-9 h-9 flex items-center justify-center rounded-lg bg-neutral-50 text-neutral-400 hover:text-red-500 hover:bg-red-50 transition-all cursor-pointer"
+                      title="Remover"
                     >
-                      <i className="fas fa-trash"></i> Remover
+                      <i className="fas fa-trash-can"></i>
                     </button>
                   </div>
                 </div>
 
-                <p className="text-neutral-500 text-sm">
-                  {endereco.cidade} • {endereco.provincia}
-                </p>
-
-                <p className="text-neutral-500 text-sm">
-                  {endereco.codigo_postal} • {endereco.pais}
-                </p>
+                <div className="space-y-1">
+                  <h3 className="text-lg font-black text-neutral-700 uppercase tracking-tight">
+                    {endereco.rua}
+                  </h3>
+                  <div className="flex items-center gap-2 text-xs font-bold text-neutral-400 uppercase tracking-widest">
+                    <span>{endereco.cidade}</span>
+                    <span className="w-1 h-1 bg-neutral-200 rounded-full"></span>
+                    <span>{endereco.provincia}</span>
+                  </div>
+                  <div className="pt-2 flex items-center gap-2 text-[10px] font-black text-blue-900/60 uppercase">
+                    <i className="fas fa-globe-africa"></i>
+                    <span>{endereco.pais}</span>
+                    {endereco.codigo_postal && (
+                      <>
+                        <span className="ml-2 px-2 py-0.5 bg-neutral-100 rounded text-neutral-500">
+                          {endereco.codigo_postal}
+                        </span>
+                      </>
+                    )}
+                  </div>
+                </div>
               </div>
             ))}
           </div>
@@ -203,43 +205,47 @@ export default function Enderecos() {
         <Modal
           isOpen={openModal}
           onClose={() => setOpenModal(false)}
-          title={enderecoSelecionado ? "Editar Endereço" : "Novo Endereço"}
-          icon="fas fa-map-marker-alt"
+          title={enderecoSelecionado ? "Modificar Endereço" : "Registrar Endereço"}
+          icon="fas fa-map-location"
         >
-          <form
-            onSubmit={handleSubmit(salvarEndereco)}
-            className="max-w-3xl mx-auto space-y-4"
-          >
-            {["rua", "cidade", "provincia", "codigo_postal", "pais"].map(
-              (campo) => (
-                <div key={campo} className="flex flex-col gap-1">
+          <form onSubmit={handleSubmit(salvarEndereco)} className="space-y-5">
+            {[
+              { id: "rua", label: "Rua / Logradouro", icon: "fa-road" },
+              { id: "cidade", label: "Cidade", icon: "fa-city" },
+              { id: "provincia", label: "Província", icon: "fa-layer-group" },
+              { id: "codigo_postal", label: "Código Postal", icon: "fa-mailbox" },
+              { id: "pais", label: "País", icon: "fa-earth-africa" }
+            ].map((campo) => (
+              <div key={campo.id} className="group">
+                <label className="block text-[10px] font-black text-neutral-400 uppercase tracking-widest mb-2 ml-1">
+                  {campo.label}
+                </label>
+                <div className="relative">
+                  <i className={`fas ${campo.icon} absolute left-4 top-1/2 -translate-y-1/2 text-neutral-300 group-focus-within:text-blue-900 transition-colors`}></i>
                   <input
                     type="text"
-                    placeholder={
-                      campo === "codigo_postal"
-                        ? "Código Postal"
-                        : campo.charAt(0).toUpperCase() + campo.slice(1)
-                    }
-                    {...register(campo)}
-                    className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 ${
-                      errors[campo] ? "border-red-500" : "border-neutral-300"
+                    {...register(campo.id)}
+                    disabled={saving}
+                    className={`w-full pl-12 pr-4 py-4 bg-neutral-50 border rounded-2xl focus:outline-none transition-all font-bold text-sm text-neutral-700 ${
+                      errors[campo.id] 
+                        ? "border-red-200 focus:border-red-400" 
+                        : "border-neutral-100 focus:border-blue-900/20 focus:bg-white"
                     }`}
-                    disabled={saving} // desabilita enquanto salva
                   />
-                  {errors[campo] && (
-                    <p className="text-red-500 text-sm">
-                      {errors[campo].message}
-                    </p>
-                  )}
                 </div>
-              ),
-            )}
+                {errors[campo.id] && (
+                  <p className="text-red-500 text-[10px] font-bold uppercase mt-1 ml-1 tracking-tighter">
+                    {errors[campo.id].message}
+                  </p>
+                )}
+              </div>
+            ))}
 
-            <div className="flex justify-end gap-3 mt-4">
+            <div className="flex flex-col-reverse md:flex-row justify-end gap-3 mt-10">
               <button
                 type="button"
                 onClick={() => setOpenModal(false)}
-                className="px-6 py-3 bg-neutral-200 hover:bg-neutral-300 text-neutral-800 rounded-lg cursor-pointer"
+                className="px-8 py-4 text-[11px] font-black uppercase tracking-widest text-neutral-400 hover:text-neutral-700 transition-colors cursor-pointer"
                 disabled={saving}
               >
                 Cancelar
@@ -247,14 +253,10 @@ export default function Enderecos() {
 
               <button
                 type="submit"
-                className="px-6 py-3 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-lg cursor-pointer"
-                disabled={saving} // desabilita enquanto salva
+                className="px-10 py-4 bg-blue-900 hover:bg-blue-800 text-neutral-50 text-[11px] font-black uppercase tracking-widest rounded-2xl shadow-lg shadow-blue-900/20 transition-all disabled:opacity-50 cursor-pointer"
+                disabled={saving}
               >
-                {saving
-                  ? enderecoSelecionado
-                    ? "Atualizando..."
-                    : "Salvando..."
-                  : "Salvar Endereço"}
+                {saving ? "Processando..." : "Finalizar Registro"}
               </button>
             </div>
           </form>

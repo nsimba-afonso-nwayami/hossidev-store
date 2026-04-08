@@ -2,169 +2,136 @@ import { useState } from "react";
 import ClienteLayout from "./components/ClienteLayout";
 
 export default function NotificacoesCliente() {
-  // Estados dos switches
+  // Estados dos switches (Lógica HOSSIDEV)
   const [pedidos, setPedidos] = useState(true);
   const [promocoes, setPromocoes] = useState(true);
   const [mensagens, setMensagens] = useState(true);
 
-  // Notificações dummy
+  // Notificações dummy com branding atualizado
   const notificacoes = [
     {
       id: 1,
-      tipo: "Pedido",
-      descricao: "Seu pedido #NW-1001 foi enviado com sucesso.",
-      data: "12/02/2026",
-      icone: "fas fa-box",
-      cor: "text-orange-500",
+      tipo: "Logística",
+      descricao: "O despacho do seu pedido #HOS-9902 foi processado e está em rota.",
+      data: "Hoje, 14:20",
+      icone: "fas fa-truck-fast",
+      cor: "text-blue-900",
     },
     {
       id: 2,
-      tipo: "Promoção",
-      descricao:
-        "Desconto de 15% em produtos selecionados neste fim de semana!",
-      data: "10/02/2026",
-      icone: "fas fa-tag",
-      cor: "text-orange-500",
+      tipo: "Campanha",
+      descricao: "Upgrade de infraestrutura disponível com 15% de desconto via HOSSIDEV Cloud.",
+      data: "Ontem",
+      icone: "fas fa-microchip",
+      cor: "text-blue-900",
     },
     {
       id: 3,
-      tipo: "Mensagem",
-      descricao: "Suporte respondeu à sua dúvida sobre o pagamento.",
-      data: "09/02/2026",
-      icone: "fas fa-envelope",
-      cor: "text-orange-500",
+      tipo: "Suporte",
+      descricao: "O seu ticket de atendimento sobre integração de API foi respondido.",
+      data: "07 Abr 2026",
+      icone: "fas fa-headset",
+      cor: "text-blue-900",
     },
   ];
 
   return (
     <>
-      <title>Notificações | Wayami Store</title>
+      <title>Notificações | HOSSIDEV Store</title>
 
-      <ClienteLayout title="Notificações">
-        {/* CONFIGURAÇÕES DE NOTIFICAÇÃO */}
-        <div className="bg-neutral-50 p-6 rounded-xl shadow-sm mb-6">
-          <h2 className="text-xl font-bold text-orange-600 mb-4">
-            Configurações de Notificação
-          </h2>
-          <p className="text-neutral-400 mb-6">
-            Ative ou desative os tipos de notificações que deseja receber.
-          </p>
-
-          <div className="grid gap-4">
-            {/* Pedidos */}
-            <div className="flex justify-between items-center border-b border-neutral-400 pb-3">
-              <div>
-                <p className="font-medium text-neutral-800">
-                  Notificações de Pedidos
-                </p>
-                <p className="text-sm text-neutral-400">
-                  Receba alertas sobre seus pedidos
-                </p>
+      <ClienteLayout title="Centro de Mensagens">
+        <div className="max-w-4xl mx-auto space-y-8">
+          
+          {/* CONFIGURAÇÕES DE PREFERÊNCIAS */}
+          <section className="bg-white border border-neutral-100 rounded-3xl p-8 shadow-sm">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-10 h-10 bg-blue-50 text-blue-900 rounded-xl flex items-center justify-center">
+                <i className="fas fa-sliders"></i>
               </div>
-              <label className="relative inline-flex items-center cursor-pointer">
-                <input
-                  type="checkbox"
-                  className="sr-only"
-                  checked={pedidos}
-                  onChange={() => setPedidos(!pedidos)}
-                />
-                <div
-                  className={`w-11 h-6 rounded-full transition-colors ${
-                    pedidos ? "bg-orange-500" : "bg-neutral-400"
-                  }`}
-                ></div>
-                <div
-                  className={`absolute left-1 top-1 w-4 h-4 bg-neutral-50 rounded-full shadow transform transition-transform ${
-                    pedidos ? "translate-x-5" : "translate-x-0"
-                  }`}
-                ></div>
-              </label>
+              <div>
+                <h2 className="text-lg font-black text-neutral-700 uppercase tracking-tight">Preferências de Alerta</h2>
+                <p className="text-[10px] font-bold text-neutral-400 uppercase tracking-widest">Controle o fluxo de dados para sua conta</p>
+              </div>
             </div>
 
-            {/* Promoções */}
-            <div className="flex justify-between items-center border-b border-neutral-400 pb-3">
-              <div>
-                <p className="font-medium text-neutral-800">
-                  Notificações de Promoções
-                </p>
-                <p className="text-sm text-neutral-400">
-                  Receba novidades e descontos especiais
-                </p>
+            <div className="space-y-4">
+              {[
+                { state: pedidos, setter: setPedidos, title: "Atualizações de Pedidos", desc: "Status de envio, confirmação de pagamento e entrega." },
+                { state: promocoes, setter: setPromocoes, title: "Ofertas e Tech News", desc: "Novos lançamentos, descontos e atualizações de serviços." },
+                { state: mensagens, setter: setMensagens, title: "Comunicação de Suporte", desc: "Respostas de tickets e avisos de manutenção programada." }
+              ].map((item, index) => (
+                <div key={index} className="flex justify-between items-center p-4 bg-neutral-50 rounded-2xl border border-neutral-100 transition-all hover:border-blue-900/10">
+                  <div className="pr-4">
+                    <p className="text-sm font-black text-neutral-700 uppercase leading-none mb-1">{item.title}</p>
+                    <p className="text-[11px] font-medium text-neutral-400">{item.desc}</p>
+                  </div>
+                  
+                  <button 
+                    onClick={() => item.setter(!item.state)}
+                    className="relative inline-flex items-center cursor-pointer group focus:outline-none"
+                  >
+                    <div className={`w-14 h-7 rounded-full transition-all duration-300 shadow-inner ${item.state ? 'bg-blue-900' : 'bg-neutral-200'}`}></div>
+                    <div className={`absolute left-1 top-1 w-5 h-5 bg-white rounded-full shadow-md transform transition-transform duration-300 ease-in-out ${item.state ? 'translate-x-7' : 'translate-x-0'}`}></div>
+                  </button>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* FEED DE NOTIFICAÇÕES RECENTES */}
+          <section className="bg-white border border-neutral-100 rounded-3xl overflow-hidden shadow-sm">
+            <div className="p-8 border-b border-neutral-50 flex justify-between items-center bg-neutral-50/50">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-blue-900 text-white rounded-xl flex items-center justify-center">
+                  <i className="fas fa-bell"></i>
+                </div>
+                <h2 className="text-lg font-black text-neutral-700 uppercase tracking-tight">Atividades Recentes</h2>
               </div>
-              <label className="relative inline-flex items-center cursor-pointer">
-                <input
-                  type="checkbox"
-                  className="sr-only"
-                  checked={promocoes}
-                  onChange={() => setPromocoes(!promocoes)}
-                />
-                <div
-                  className={`w-11 h-6 rounded-full transition-colors ${
-                    promocoes ? "bg-orange-500" : "bg-neutral-400"
-                  }`}
-                ></div>
-                <div
-                  className={`absolute left-1 top-1 w-4 h-4 bg-neutral-50 rounded-full shadow transform transition-transform ${
-                    promocoes ? "translate-x-5" : "translate-x-0"
-                  }`}
-                ></div>
-              </label>
+              <button className="text-[10px] font-black text-blue-900 uppercase tracking-widest hover:underline cursor-pointer">
+                Marcar todas como lidas
+              </button>
             </div>
 
-            {/* Mensagens */}
-            <div className="flex justify-between items-center">
-              <div>
-                <p className="font-medium text-neutral-800">
-                  Notificações de Mensagens
-                </p>
-                <p className="text-sm text-neutral-400">
-                  Receba respostas e avisos do suporte
-                </p>
-              </div>
-              <label className="relative inline-flex items-center cursor-pointer">
-                <input
-                  type="checkbox"
-                  className="sr-only"
-                  checked={mensagens}
-                  onChange={() => setMensagens(!mensagens)}
-                />
+            <div className="divide-y divide-neutral-50">
+              {notificacoes.map((noti) => (
                 <div
-                  className={`w-11 h-6 rounded-full transition-colors ${
-                    mensagens ? "bg-orange-500" : "bg-neutral-400"
-                  }`}
-                ></div>
-                <div
-                  className={`absolute left-1 top-1 w-4 h-4 bg-neutral-50 rounded-full shadow transform transition-transform ${
-                    mensagens ? "translate-x-5" : "translate-x-0"
-                  }`}
-                ></div>
-              </label>
-            </div>
-          </div>
-        </div>
-
-        {/* LISTA DE NOTIFICAÇÕES */}
-        <div className="bg-neutral-50 p-6 rounded-xl shadow-sm">
-          <h2 className="text-xl font-bold text-orange-600 mb-4">
-            Notificações Recentes
-          </h2>
-          <ul className="divide-y divide-neutral-400">
-            {notificacoes.map((noti) => (
-              <li
-                key={noti.id}
-                className="flex justify-between items-center py-4"
-              >
-                <div className="flex gap-4 items-start">
-                  <i className={`${noti.icone} ${noti.cor} text-lg mt-1`}></i>
-                  <div>
-                    <p className="font-medium text-neutral-800">{noti.tipo}</p>
-                    <p className="text-sm text-neutral-400">{noti.descricao}</p>
+                  key={noti.id}
+                  className="p-6 md:p-8 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-neutral-50 transition-colors group cursor-default"
+                >
+                  <div className="flex gap-6 items-start">
+                    <div className={`w-12 h-12 shrink-0 rounded-2xl border border-neutral-100 flex items-center justify-center bg-white shadow-sm group-hover:scale-110 transition-transform ${noti.cor}`}>
+                      <i className={`${noti.icone} text-lg`}></i>
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-3 mb-1">
+                        <span className="text-[10px] font-black text-blue-900 bg-blue-50 px-2 py-0.5 rounded uppercase tracking-tighter">
+                          {noti.tipo}
+                        </span>
+                        <span className="text-[10px] font-bold text-neutral-300 uppercase hidden md:block">
+                          ID-REF: 00{noti.id}
+                        </span>
+                      </div>
+                      <p className="text-sm font-bold text-neutral-600 leading-snug group-hover:text-neutral-900 transition-colors">
+                        {noti.descricao}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex md:flex-col items-center md:items-end justify-between md:justify-center">
+                    <span className="text-[11px] font-black text-neutral-400 uppercase tracking-tighter whitespace-nowrap">
+                      {noti.data}
+                    </span>
+                    <i className="fas fa-circle text-[6px] text-blue-900 mt-2 hidden md:block animate-pulse"></i>
                   </div>
                 </div>
-                <span className="text-sm text-neutral-400">{noti.data}</span>
-              </li>
-            ))}
-          </ul>
+              ))}
+            </div>
+
+            <div className="p-6 bg-neutral-50 text-center">
+              <button className="text-[11px] font-black text-neutral-400 uppercase tracking-[0.2em] hover:text-blue-900 transition-colors cursor-pointer">
+                Carregar Histórico Antigo
+              </button>
+            </div>
+          </section>
         </div>
       </ClienteLayout>
     </>

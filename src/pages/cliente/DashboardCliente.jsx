@@ -33,9 +33,9 @@ export default function DashboardCliente() {
   if (loading) {
     return (
       <ClienteLayout title="Minha Conta">
-        <section className="w-full bg-neutral-100 py-16 pt-47 text-center">
-          <i className="fas fa-spinner fa-spin text-3xl text-orange-500 mb-3"></i>
-          <p className="text-neutral-600">Carregando...</p>
+        <section className="w-full py-32 text-center">
+          <i className="fas fa-spinner fa-spin text-3xl text-blue-900 mb-4"></i>
+          <p className="text-neutral-500 font-bold uppercase tracking-widest text-xs">Carregando dados...</p>
         </section>
       </ClienteLayout>
     );
@@ -43,66 +43,78 @@ export default function DashboardCliente() {
 
   return (
     <>
-      <title>Dashboard Cliente | Nwayami Store</title>
+      <title>Dashboard | HOSSIDEV Store</title>
 
-      <ClienteLayout title="Minha Conta">
-        {/* RESUMO */}
+      <ClienteLayout title="Painel de Controle">
+        {/* RESUMO DE STATUS */}
         <section className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           {/* Total Pedidos */}
-          <div className="bg-white p-6 rounded-xl shadow-sm border-l-4 border-orange-500">
+          <div className="bg-white p-6 rounded-2xl shadow-sm border border-neutral-100 relative overflow-hidden group">
+            <div className="absolute top-0 left-0 w-1.5 h-full bg-blue-900"></div>
             <div className="flex justify-between items-center">
               <div>
-                <p className="text-sm text-neutral-500">Total de Pedidos</p>
-                <h3 className="text-2xl font-bold text-neutral-900">
+                <p className="text-[10px] font-black text-neutral-400 uppercase tracking-widest mb-1">Total de Pedidos</p>
+                <h3 className="text-3xl font-black text-neutral-700">
                   {pedidos.length}
                 </h3>
               </div>
-              <i className="fas fa-box text-orange-500 text-2xl"></i>
+              <div className="w-12 h-12 bg-neutral-50 rounded-xl flex items-center justify-center text-blue-900 group-hover:bg-blue-900 group-hover:text-white transition-all">
+                <i className="fas fa-box-open text-xl"></i>
+              </div>
             </div>
           </div>
 
           {/* Total Endereços */}
-          <div className="bg-white p-6 rounded-xl shadow-sm border-l-4 border-blue-500">
+          <div className="bg-white p-6 rounded-2xl shadow-sm border border-neutral-100 relative overflow-hidden group">
+            <div className="absolute top-0 left-0 w-1.5 h-full bg-neutral-400"></div>
             <div className="flex justify-between items-center">
               <div>
-                <p className="text-sm text-neutral-500">Meus Endereços</p>
-                <h3 className="text-2xl font-bold text-neutral-900">
+                <p className="text-[10px] font-black text-neutral-400 uppercase tracking-widest mb-1">Meus Endereços</p>
+                <h3 className="text-3xl font-black text-neutral-700">
                   {enderecos.length}
                 </h3>
               </div>
-              <i className="fas fa-map-marker-alt text-blue-500 text-2xl"></i>
+              <div className="w-12 h-12 bg-neutral-50 rounded-xl flex items-center justify-center text-neutral-500 group-hover:bg-neutral-700 group-hover:text-white transition-all">
+                <i className="fas fa-map-marked-alt text-xl"></i>
+              </div>
             </div>
           </div>
         </section>
 
-        {/* PEDIDOS + AÇÕES */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+        {/* CONTEÚDO PRINCIPAL */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
+          
           {/* ÚLTIMOS PEDIDOS */}
-          <div className="bg-white p-6 rounded-xl shadow-sm">
-            <h2 className="text-lg font-bold text-neutral-800 mb-4">
-              Últimos Pedidos
-            </h2>
+          <div className="bg-white p-8 rounded-3xl shadow-sm border border-neutral-100">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-sm font-black text-neutral-700 uppercase tracking-widest">
+                Atividade Recente
+              </h2>
+              <i className="fas fa-history text-neutral-300"></i>
+            </div>
 
             {pedidos.length === 0 ? (
-              <p className="text-sm text-neutral-500">
-                Você ainda não realizou nenhum pedido.
-              </p>
+              <div className="py-10 text-center">
+                <p className="text-sm text-neutral-400 italic">
+                  Nenhum pedido registrado até o momento.
+                </p>
+              </div>
             ) : (
-              <ul className="divide-y divide-neutral-200">
-                {pedidos.slice(0, 5).map((pedido) => (
-                  <li key={pedido.id} className="py-3 flex justify-between">
+              <ul className="space-y-4">
+                {pedidos.slice(0, 4).map((pedido) => (
+                  <li key={pedido.id} className="flex justify-between items-center p-4 rounded-xl bg-neutral-50 hover:bg-neutral-100 transition-colors">
                     <div>
-                      <p className="font-medium text-neutral-900">
-                        Pedido #{pedido.id}
+                      <p className="text-xs font-black text-neutral-700 uppercase">
+                        #{pedido.id.toString().padStart(4, '0')}
                       </p>
-                      <p className="text-sm text-neutral-500">
-                        Total: {pedido.total || "—"}
+                      <p className="text-[11px] font-bold text-blue-900">
+                        {pedido.total || "Kz 0,00"}
                       </p>
                     </div>
-                    <span className="text-sm text-neutral-500">
+                    <span className="text-[10px] font-bold text-neutral-400">
                       {pedido.criado_em
                         ? new Date(pedido.criado_em).toLocaleDateString()
-                        : ""}
+                        : "Recente"}
                     </span>
                   </li>
                 ))}
@@ -111,64 +123,42 @@ export default function DashboardCliente() {
 
             <Link
               to="/dashboard/cliente/pedidos"
-              className="mt-4 inline-block text-sm font-semibold text-orange-500 hover:text-orange-600"
+              className="mt-6 flex items-center justify-center gap-2 text-[11px] font-black text-blue-900 uppercase tracking-widest hover:gap-4 transition-all no-underline"
             >
-              Ver todos os pedidos →
+              Histórico Completo <i className="fas fa-arrow-right"></i>
             </Link>
           </div>
 
-          {/* AÇÕES RÁPIDAS */}
-          <div className="bg-white p-6 rounded-xl shadow-sm">
-            <h2 className="text-lg font-bold text-neutral-800 mb-4">
-              Ações Rápidas
+          {/* AÇÕES RÁPIDAS DE GESTÃO */}
+          <div className="bg-white p-8 rounded-3xl shadow-sm border border-neutral-100">
+            <h2 className="text-sm font-black text-neutral-700 uppercase tracking-widest mb-6">
+              Gestão de Conta
             </h2>
 
-            <ul className="divide-y divide-neutral-200">
-              <li className="py-3 flex justify-between items-center">
-                <div>
-                  <p className="font-medium text-neutral-900">Meus Pedidos</p>
-                  <p className="text-sm text-neutral-500">
-                    Acompanhe suas compras
-                  </p>
-                </div>
+            <div className="space-y-4">
+              {[
+                { to: "/dashboard/cliente/pedidos", icon: "fa-shopping-cart", title: "Pedidos", desc: "Acompanhe suas compras" },
+                { to: "/dashboard/cliente/enderecos", icon: "fa-map-pin", title: "Endereços", desc: "Gerenciar locais de entrega" },
+                { to: "/dashboard/cliente/perfil", icon: "fa-user-edit", title: "Perfil", desc: "Atualizar seus dados pessoais" },
+              ].map((acao, idx) => (
                 <Link
-                  to="/dashboard/cliente/pedidos"
-                  className="px-3 py-1 text-sm bg-orange-500 hover:bg-orange-600 text-white rounded-lg font-semibold"
+                  key={idx}
+                  to={acao.to}
+                  className="flex justify-between items-center p-4 rounded-2xl border border-neutral-50 hover:border-blue-900/20 hover:bg-blue-900/2 transition-all group no-underline"
                 >
-                  Acessar
+                  <div className="flex items-center gap-4">
+                    <div className="w-10 h-10 rounded-lg bg-neutral-100 flex items-center justify-center text-neutral-400 group-hover:text-blue-900 transition-colors">
+                      <i className={`fas ${acao.icon}`}></i>
+                    </div>
+                    <div>
+                      <p className="text-xs font-black text-neutral-700 uppercase tracking-tight">{acao.title}</p>
+                      <p className="text-[10px] text-neutral-400 font-bold">{acao.desc}</p>
+                    </div>
+                  </div>
+                  <i className="fas fa-chevron-right text-neutral-300 group-hover:text-blue-900 group-hover:translate-x-1 transition-all"></i>
                 </Link>
-              </li>
-
-              <li className="py-3 flex justify-between items-center">
-                <div>
-                  <p className="font-medium text-neutral-900">Meus Endereços</p>
-                  <p className="text-sm text-neutral-500">
-                    Gerencie seus endereços
-                  </p>
-                </div>
-                <Link
-                  to="/dashboard/cliente/enderecos"
-                  className="px-3 py-1 text-sm bg-orange-500 hover:bg-orange-600 text-white rounded-lg font-semibold"
-                >
-                  Acessar
-                </Link>
-              </li>
-
-              <li className="py-3 flex justify-between items-center">
-                <div>
-                  <p className="font-medium text-neutral-900">Editar Perfil</p>
-                  <p className="text-sm text-neutral-500">
-                    Atualize seus dados
-                  </p>
-                </div>
-                <Link
-                  to="/dashboard/cliente/perfil"
-                  className="px-3 py-1 text-sm bg-orange-500 hover:bg-orange-600 text-white rounded-lg font-semibold"
-                >
-                  Acessar
-                </Link>
-              </li>
-            </ul>
+              ))}
+            </div>
           </div>
         </div>
       </ClienteLayout>
