@@ -32,43 +32,47 @@ export default function RecuperarSenha() {
 
   return (
     <>
-      <title>Recuperar Senha | Nwayami Store</title>
-
-      <section className="w-full min-h-screen flex items-center justify-center bg-neutral-100 py-16 px-6">
-        <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-8 border border-neutral-200">
-          {/* Ícone */}
+      <section className="w-full min-h-screen flex items-center justify-center bg-neutral-100 py-20 px-6">
+        <div className="w-full max-w-md bg-white rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.05)] p-10 border border-neutral-100">
+          
+          {/* Ícone da Loja */}
           <div className="flex justify-center mb-6">
-            <div className="w-16 h-16 flex items-center justify-center bg-orange-500 text-white rounded-full text-3xl shadow-lg">
-              <i className="fa-solid fa-key"></i>
+            <div className="w-16 h-16 flex items-center justify-center bg-blue-900 text-white rounded-full text-3xl shadow-lg shadow-blue-900/20">
+              <i className="fa-solid fa-cart-shopping"></i>
             </div>
           </div>
 
-          <h1 className="text-3xl font-bold text-neutral-800 mb-4 text-center">
+          <h1 className="text-3xl font-bold text-neutral-800 mb-4 text-center tracking-tight">
             Recuperar Senha
           </h1>
 
-          <p className="text-sm text-neutral-500 text-center mb-6">
+          <p className="text-sm text-neutral-500 text-center mb-8 leading-relaxed">
             Digite o seu email e enviaremos um link para redefinir sua senha.
           </p>
 
-          <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
+          <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
             {/* Email */}
             <div>
-              <label className="block mb-2 text-neutral-700 font-semibold">
+              <label className="block mb-2 text-neutral-700 font-semibold ml-1">
                 Email
               </label>
-              <input
-                type="email"
-                placeholder="seuemail@exemplo.com"
-                className={`w-full p-3 rounded-lg bg-neutral-100 border ${
-                  errors.email
-                    ? "border-red-500"
-                    : "border-neutral-300 focus:border-orange-500"
-                } focus:outline-none transition`}
-                {...register("email")}
-              />
+              <div className="relative">
+                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-400">
+                  <i className="fa-solid fa-envelope"></i>
+                </span>
+                <input
+                  type="email"
+                  placeholder="seuemail@exemplo.com"
+                  className={`w-full pl-12 p-4 rounded-xl bg-neutral-50 border transition-all ${
+                    errors.email
+                      ? "border-red-500"
+                      : "border-neutral-200 focus:border-blue-900 focus:bg-white"
+                  } focus:outline-none`}
+                  {...register("email")}
+                />
+              </div>
               {errors.email && (
-                <p className="text-red-500 text-sm mt-1">
+                <p className="text-red-500 text-sm mt-1 ml-1 font-medium">
                   {errors.email.message}
                 </p>
               )}
@@ -77,17 +81,17 @@ export default function RecuperarSenha() {
             {/* Botão */}
             <button
               type="submit"
-              className="w-full py-3 rounded-xl font-bold bg-orange-500 hover:bg-orange-600 transition cursor-pointer text-white"
+              className="w-full py-4 rounded-2xl font-black uppercase tracking-[0.15em] text-[12px] bg-blue-900 hover:bg-blue-800 transition-all cursor-pointer text-white shadow-xl shadow-blue-900/20 active:scale-95"
             >
               Enviar link de recuperação
             </button>
 
             {/* Voltar para login */}
-            <p className="mt-4 text-center text-sm text-neutral-600">
+            <p className="mt-6 text-center text-sm text-neutral-600">
               Lembrou da senha?{" "}
               <Link
                 to="/login"
-                className="text-orange-500 font-semibold hover:underline"
+                className="text-blue-900 font-bold hover:underline"
               >
                 Entrar
               </Link>
