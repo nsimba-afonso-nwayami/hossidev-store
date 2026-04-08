@@ -5,7 +5,6 @@ import { useCart } from "../../contexts/CartContext";
 
 export default function Marca() {
   const { nome } = useParams();
-
   const { addToCart } = useCart();
 
   const [produtos, setProdutos] = useState([]);
@@ -23,7 +22,6 @@ export default function Marca() {
         setLoading(false);
       }
     }
-
     carregar();
   }, []);
 
@@ -49,106 +47,115 @@ export default function Marca() {
 
   if (loading) {
     return (
-      <section className="w-full bg-neutral-100 py-16 pt-47 text-center">
-        <i className="fas fa-spinner fa-spin text-3xl text-orange-500 mb-3"></i>
-        <p className="text-neutral-600">Carregando produtos...</p>
+      <section className="w-full bg-neutral-50 min-h-screen pt-40 flex flex-col items-center">
+        <div className="w-10 h-10 border-4 border-blue-900/20 border-t-blue-900 rounded-full animate-spin mb-4"></div>
+        <p className="text-neutral-500 font-medium">Carregando catálogo {marcaFormatada}...</p>
       </section>
     );
   }
 
   return (
-    <section className="w-full bg-neutral-100 py-16 pt-47">
-      <div className="max-w-7xl mx-auto px-4">
-        <h1 className="text-2xl md:text-3xl font-bold text-neutral-800 mb-4 capitalize">
-          Marca: {marcaFormatada}
-        </h1>
+    <section className="w-full bg-neutral-100 min-h-screen pt-32 md:pt-40 pb-20">
+      <div className="max-w-7xl mx-auto px-6">
+        
+        {/* Header da Marca */}
+        <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+          <div className="max-w-xl">
+            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-900 mb-2 block">
+              Produtos por Marca
+            </span>
+            <h1 className="text-3xl md:text-4xl font-bold text-neutral-800 tracking-tight">
+              {marcaFormatada}
+            </h1>
+          </div>
 
-        <div className="mb-6">
-          <input
-            type="search"
-            placeholder="Pesquisar produtos..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="w-full md:w-1/3 px-4 py-2 rounded-lg border border-neutral-300 focus:outline-none focus:ring-2 focus:ring-orange-500"
-          />
+          <div className="w-full md:w-80">
+            <input
+              type="search"
+              placeholder="Buscar nesta marca..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="w-full px-5 py-3 rounded-xl bg-white border border-neutral-200 focus:outline-none focus:ring-2 focus:ring-blue-900/10 focus:border-blue-900 transition-all text-sm shadow-sm"
+            />
+          </div>
         </div>
 
         {produtosFiltrados.length === 0 ? (
-          <div className="max-w-md mx-auto bg-white rounded-xl shadow p-8 text-center">
-            <i className="fas fa-box-open text-4xl text-orange-500 mb-4"></i>
-            <h2 className="text-xl font-bold text-neutral-800 mb-2">
-              Nenhum produto encontrado
-            </h2>
-            <p className="text-neutral-600 text-sm">
-              Não existem produtos desta marca ou correspondentes à pesquisa.
-            </p>
+          <div className="bg-white rounded-3xl p-20 text-center border border-dashed border-neutral-300">
+             <div className="w-16 h-16 bg-neutral-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i className="fas fa-tag text-neutral-300 text-xl"></i>
+             </div>
+            <h2 className="text-lg font-bold text-neutral-700">Nenhum produto encontrado</h2>
+            <p className="text-neutral-500 text-sm mt-1">Não há itens disponíveis para {marcaFormatada} no momento.</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {produtosFiltrados.map((produto) => (
-              <div
-                key={produto.id}
-                className="bg-white rounded-xl shadow hover:shadow-lg transition p-4 flex flex-col"
-              >
-                <div className="w-full overflow-hidden rounded-lg mb-4">
-                  <img
-                    src={formatImageUrl(produto.imagem)}
-                    alt={produto.descricao}
-                    className="w-full h-40 object-cover transition-transform duration-300 hover:scale-105"
-                  />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            {produtosFiltrados.map((produto) => {
+              const productSlug = produto.descricao.toLowerCase().replaceAll(" ", "-").replaceAll("/", "");
+              
+              return (
+                <div
+                  key={produto.id}
+                  className="group bg-white rounded-2xl border border-neutral-100 p-4 flex flex-col transition-all duration-300 hover:shadow-[0_20px_40px_rgba(0,0,0,0.05)] hover:-translate-y-1"
+                >
+                  {/* Imagem Container */}
+                  <div className="relative w-full h-56 overflow-hidden rounded-xl bg-neutral-50 mb-4">
+                    <img
+                      src={formatImageUrl(produto.imagem)}
+                      alt={produto.descricao}
+                      className="w-full h-full object-contain p-4 transition-transform duration-500 group-hover:scale-110"
+                    />
+                    <div className={`absolute top-3 left-3 px-2 py-1 rounded-md text-[9px] font-bold uppercase tracking-wider ${
+                      produto.stock === "Disponível" 
+                      ? "bg-green-50 text-green-600" 
+                      : "bg-red-50 text-red-600"
+                    }`}>
+                      {produto.stock}
+                    </div>
+                  </div>
+
+                  {/* Info */}
+                  <div className="flex flex-col grow">
+                    <p className="text-[10px] font-bold text-neutral-400 uppercase mb-1">SKU: {produto.codigo}</p>
+                    <Link 
+                      to={`/produtos/${productSlug}`}
+                      className="text-sm font-bold text-neutral-700 hover:text-blue-900 transition-colors line-clamp-2 mb-2 no-underline"
+                    >
+                      {produto.descricao}
+                    </Link>
+                    
+                    <div className="mt-auto pt-4 flex flex-col gap-3">
+                      <p className="text-xl font-bold text-blue-900">
+                        {Number(produto.preco_com_iva).toLocaleString("pt-AO")} <span className="text-xs">Kz</span>
+                      </p>
+
+                      <div className="grid grid-cols-5 gap-2">
+                        <button
+                          disabled={produto.stock !== "Disponível"}
+                          onClick={() => addToCart({
+                            id: produto.id,
+                            descricao: produto.descricao,
+                            codigo: produto.codigo,
+                            preco_com_iva: Number(produto.preco_com_iva),
+                            imagem: produto.imagem,
+                          })}
+                          className="col-span-1 h-10 flex items-center justify-center bg-neutral-100 text-neutral-600 rounded-lg hover:bg-blue-900 hover:text-white transition-all active:scale-90 disabled:opacity-50"
+                        >
+                          <i className="fas fa-shopping-cart text-xs"></i>
+                        </button>
+                        
+                        <Link
+                          to={`/produtos/${productSlug}`}
+                          className="col-span-4 h-10 flex items-center justify-center bg-blue-900 text-white text-[10px] font-black uppercase tracking-widest rounded-lg hover:bg-blue-800 transition-all no-underline shadow-lg shadow-blue-900/10"
+                        >
+                          Ver Detalhes
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-
-                <h3 className="text-sm font-semibold text-neutral-800 mb-1">
-                  {produto.descricao}
-                </h3>
-
-                <p className="text-xs text-neutral-500 mb-2">
-                  Código: {produto.codigo}
-                </p>
-
-                <p className="text-orange-500 text-lg font-bold mb-2">
-                  {Number(produto.preco_com_iva).toLocaleString("pt-AO")} Kz
-                </p>
-
-                <span className="text-xs font-semibold bg-green-100 text-green-700 px-2 py-1 rounded mb-4 w-fit">
-                  {produto.stock}
-                </span>
-
-                <div className="mt-auto flex flex-col gap-2">
-                  <button
-                    disabled={produto.stock !== "Disponível"}
-                    onClick={() =>
-                      addToCart({
-                        id: produto.id,
-                        descricao: produto.descricao,
-                        codigo: produto.codigo,
-                        preco_com_iva: Number(produto.preco_com_iva),
-                        imagem: produto.imagem,
-                      })
-                    }
-                    className={`py-2 rounded-lg text-sm font-semibold transition cursor-pointer ${
-                      produto.stock === "Disponível"
-                        ? "bg-neutral-900 text-white hover:bg-neutral-800"
-                        : "bg-neutral-400 text-white cursor-not-allowed"
-                    }`}
-                  >
-                    {produto.stock === "Disponível"
-                      ? "Adicionar ao carrinho"
-                      : "Indisponível"}
-                  </button>
-
-                  <Link
-                    to={`/produtos/${produto.descricao
-                      .toLowerCase()
-                      .replaceAll(" ", "-")
-                      .replaceAll("/", "")}`}
-                    className="block text-center border border-orange-500 text-orange-500 py-2 rounded-lg text-sm font-semibold hover:bg-orange-500 hover:text-white transition"
-                  >
-                    Ver produto
-                  </Link>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>
