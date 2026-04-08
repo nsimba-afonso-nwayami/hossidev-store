@@ -26,13 +26,11 @@ export default function Produtos() {
     return newArray;
   }
 
-  // Carregar produtos da API
   useEffect(() => {
     async function carregarProdutos() {
       try {
         const data = await listarProdutos();
-        const produtosAleatorios = shuffleArray(data);
-        setProdutos(produtosAleatorios);
+        setProdutos(shuffleArray(data));
       } catch (error) {
         console.error("Erro ao carregar produtos:", error);
       } finally {
@@ -42,7 +40,6 @@ export default function Produtos() {
     carregarProdutos();
   }, []);
 
-  // Listas únicas para filtros
   const categorias = Array.from(new Set(produtos.map((p) => p.categoria_nome)));
   const subcategorias = selectedCategory
     ? Array.from(
@@ -54,170 +51,161 @@ export default function Produtos() {
       )
     : [];
 
-  // Filtragem dos produtos
   const produtosFiltrados = produtos
     .filter((p) => !selectedCategory || p.categoria_nome === selectedCategory)
-    .filter(
-      (p) =>
-        !selectedSubcategory || p.subcategoria_nome === selectedSubcategory,
-    )
-    .filter(
-      (p) =>
+    .filter((p) => !selectedSubcategory || p.subcategoria_nome === selectedSubcategory)
+    .filter((p) =>
         p.descricao.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        p.codigo.toLowerCase().includes(searchTerm.toLowerCase()),
+        p.codigo.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-  return (
-    <section className="w-full bg-neutral-100 pt-47 pb-16">
-      <div className="max-w-7xl mx-auto px-4 flex flex-col gap-6">
-        {/* Controles de pesquisa e filtros */}
-        <div className="flex flex-col md:flex-row gap-4 items-start md:items-center mb-6">
-          {/* Input de pesquisa */}
-          <input
-            type="text"
-            placeholder="Buscar produtos..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full md:w-1/3 px-4 py-2 rounded-lg border border-neutral-300 focus:outline-none focus:ring-2 focus:ring-orange-500"
-          />
+  const SkeletonCard = () => (
+    <div className="bg-white rounded-2xl p-4 shadow-sm animate-pulse border border-neutral-100">
+      <div className="w-full h-48 bg-neutral-200 rounded-xl mb-4" />
+      <div className="h-4 bg-neutral-200 rounded w-1/4 mb-2" />
+      <div className="h-4 bg-neutral-200 rounded w-3/4 mb-4" />
+      <div className="h-10 bg-neutral-100 rounded-lg w-full" />
+    </div>
+  );
 
-          {/* Select de categorias */}
+  return (
+    <section className="w-full bg-neutral-100 min-h-screen pt-32 md:pt-40 pb-24">
+      <div className="max-w-7xl mx-auto px-6 flex flex-col gap-8">
+        
+        {/* Header da Página */}
+        <div className="flex flex-col gap-2">
+          <h1 className="text-3xl md:text-4xl font-bold text-neutral-800 tracking-tight">Catálogo de Produtos</h1>
+          <p className="text-neutral-500 text-sm">Encontre a tecnologia ideal para suas necessidades.</p>
+        </div>
+
+        {/* Barra de Filtros Premium */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 bg-white p-6 rounded-2xl shadow-sm border border-neutral-200/50">
+          <div className="relative">
+            <input
+              type="text"
+              placeholder="Pesquisar por nome ou código..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full pl-4 pr-4 py-3 rounded-xl bg-neutral-50 border border-neutral-200 focus:outline-none focus:ring-2 focus:ring-blue-900/10 focus:border-blue-900 transition-all text-sm"
+            />
+          </div>
+
           <select
             value={selectedCategory}
             onChange={(e) => {
               setSelectedCategory(e.target.value);
               setSelectedSubcategory("");
             }}
-            className="w-full md:w-1/4 px-4 py-2 rounded-lg border border-neutral-300 focus:outline-none focus:ring-2 focus:ring-orange-500"
+            className="w-full px-4 py-3 rounded-xl bg-neutral-50 border border-neutral-200 focus:outline-none focus:ring-2 focus:ring-blue-900/10 text-sm cursor-pointer"
           >
-            <option value="">Todas as categorias</option>
-            {categorias.map((cat, idx) => (
-              <option key={idx} value={cat}>
-                {cat}
-              </option>
-            ))}
+            <option value="">Todas as Categorias</option>
+            {categorias.map((cat, idx) => <option key={idx} value={cat}>{cat}</option>)}
           </select>
 
-          {/* Select de subcategorias */}
-          {subcategorias.length > 0 && (
-            <select
-              value={selectedSubcategory}
-              onChange={(e) => setSelectedSubcategory(e.target.value)}
-              className="w-full md:w-1/4 px-4 py-2 rounded-lg border border-neutral-300 focus:outline-none focus:ring-2 focus:ring-orange-500"
-            >
-              <option value="">Todas as subcategorias</option>
-              {subcategorias.map((sub, idx) => (
-                <option key={idx} value={sub}>
-                  {sub}
-                </option>
-              ))}
-            </select>
-          )}
+          <select
+            value={selectedSubcategory}
+            onChange={(e) => setSelectedSubcategory(e.target.value)}
+            disabled={!selectedCategory}
+            className="w-full px-4 py-3 rounded-xl bg-neutral-50 border border-neutral-200 focus:outline-none focus:ring-2 focus:ring-blue-900/10 text-sm cursor-pointer disabled:opacity-50"
+          >
+            <option value="">Todas as Subcategorias</option>
+            {subcategorias.map((sub, idx) => <option key={idx} value={sub}>{sub}</option>)}
+          </select>
         </div>
 
-        {/* Conteúdo de produtos */}
+        {/* Listagem */}
         {loading ? (
-          <div className="flex flex-col justify-center items-center h-64 gap-4">
-            <i className="fas fa-spinner fa-spin text-3xl text-orange-500"></i>
-            <p className="text-neutral-600">Carregando produtos...</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            {Array(8).fill(0).map((_, i) => <SkeletonCard key={i} />)}
           </div>
         ) : produtosFiltrados.length === 0 ? (
-          <div className="max-w-md mx-auto bg-white rounded-xl shadow p-8 text-center">
-            <i className="fas fa-box-open text-4xl text-orange-500 mb-4"></i>
-            <h2 className="text-xl font-bold text-neutral-800 mb-2">
-              Nenhum produto encontrado
-            </h2>
-            <p className="text-neutral-600 text-sm">
-              Não existem produtos correspondentes aos filtros.
-            </p>
+          <div className="bg-white rounded-2xl p-20 text-center border border-dashed border-neutral-300">
+            <h2 className="text-xl font-bold text-neutral-700">Nenhum resultado encontrado</h2>
+            <p className="text-neutral-500 mt-2">Tente ajustar seus filtros ou termos de pesquisa.</p>
           </div>
         ) : (
           <>
-            <p className="text-neutral-600 mb-2">
-              Mostrando {Math.min(visibleCount, produtosFiltrados.length)} de{" "}
-              {produtosFiltrados.length} produtos
-            </p>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {produtosFiltrados.slice(0, visibleCount).map((produto) => (
-                <div
-                  key={produto.id}
-                  className="bg-white rounded-xl shadow hover:shadow-lg transition p-4 flex flex-col"
-                >
-                  <div className="w-full overflow-hidden rounded-lg mb-4">
-                    <img
-                      src={formatImageUrl(produto.imagem)}
-                      alt={produto.descricao}
-                      className="w-full h-40 object-cover transition-transform duration-300 hover:scale-105"
-                    />
-                  </div>
-
-                  <h3 className="text-sm font-semibold text-neutral-800 mb-1 line-clamp-2">
-                    {produto.descricao}
-                  </h3>
-
-                  <p className="text-xs text-neutral-500 mb-2">
-                    Código: {produto.codigo}
-                  </p>
-
-                  <p className="text-orange-500 text-lg font-bold mb-2">
-                    {Number(produto.preco_com_iva).toLocaleString("pt-AO")} Kz
-                  </p>
-
-                  <span
-                    className={`text-xs font-semibold px-2 py-1 rounded mb-4 w-fit ${
-                      produto.stock === "Disponível"
-                        ? "bg-green-100 text-green-700"
-                        : "bg-red-100 text-red-600"
-                    }`}
-                  >
-                    {produto.stock}
-                  </span>
-
-                  <div className="mt-auto flex flex-col gap-2">
-                    <button
-                      disabled={produto.stock !== "Disponível"}
-                      onClick={() =>
-                        addToCart({
-                          id: produto.id,
-                          descricao: produto.descricao,
-                          codigo: produto.codigo,
-                          preco_com_iva: Number(produto.preco_com_iva),
-                          imagem: produto.imagem,
-                        })
-                      }
-                      className={`py-2 rounded-lg text-sm font-semibold transition cursor-pointer ${
-                        produto.stock === "Disponível"
-                          ? "bg-neutral-900 text-white hover:bg-neutral-800"
-                          : "bg-neutral-400 text-white cursor-not-allowed"
-                      }`}
-                    >
-                      {produto.stock === "Disponível"
-                        ? "Adicionar ao carrinho"
-                        : "Indisponível"}
-                    </button>
-
-                    <Link
-                      to={`/produtos/${produto.descricao
-                        .toLowerCase()
-                        .replaceAll(" ", "-")
-                        .replaceAll("/", "")}`}
-                      className="block text-center border border-orange-500 text-orange-500 py-2 rounded-lg text-sm font-semibold hover:bg-orange-500 hover:text-white transition"
-                    >
-                      Ver produto
-                    </Link>
-                  </div>
-                </div>
-              ))}
+            <div className="flex justify-between items-center">
+              <p className="text-neutral-500 text-xs font-bold uppercase tracking-widest">
+                Exibindo {Math.min(visibleCount, produtosFiltrados.length)} de {produtosFiltrados.length} itens
+              </p>
             </div>
 
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+              {produtosFiltrados.slice(0, visibleCount).map((produto) => {
+                const productSlug = produto.descricao.toLowerCase().replaceAll(" ", "-").replaceAll("/", "");
+                
+                return (
+                  <div
+                    key={produto.id}
+                    className="group bg-white rounded-2xl border border-neutral-100 p-4 flex flex-col transition-all duration-300 hover:shadow-[0_20px_40px_rgba(0,0,0,0.05)] hover:-translate-y-1"
+                  >
+                    {/* Imagem Container */}
+                    <div className="relative w-full h-56 overflow-hidden rounded-xl bg-neutral-50 mb-4">
+                      <img
+                        src={formatImageUrl(produto.imagem)}
+                        alt={produto.descricao}
+                        className="w-full h-full object-contain p-4 transition-transform duration-500 group-hover:scale-110"
+                      />
+                      <div className={`absolute top-3 left-3 px-2 py-1 rounded-md text-[9px] font-bold uppercase tracking-wider ${
+                        produto.stock === "Disponível" ? "bg-green-50 text-green-600" : "bg-red-50 text-red-600"
+                      }`}>
+                        {produto.stock}
+                      </div>
+                    </div>
+
+                    {/* Info */}
+                    <div className="flex flex-col grow">
+                      <p className="text-[10px] font-bold text-neutral-400 uppercase mb-1">SKU: {produto.codigo}</p>
+                      <Link 
+                        to={`/produtos/${productSlug}`}
+                        className="text-sm font-bold text-neutral-700 hover:text-blue-900 transition-colors line-clamp-2 mb-2 no-underline"
+                      >
+                        {produto.descricao}
+                      </Link>
+                      
+                      <div className="mt-auto pt-4 flex flex-col gap-3">
+                        <p className="text-xl font-bold text-blue-900">
+                          {Number(produto.preco_com_iva).toLocaleString("pt-AO")} <span className="text-xs">Kz</span>
+                        </p>
+
+                        <div className="grid grid-cols-5 gap-2">
+                          <button
+                            disabled={produto.stock !== "Disponível"}
+                            onClick={() => addToCart({
+                                id: produto.id,
+                                descricao: produto.descricao,
+                                codigo: produto.codigo,
+                                preco_com_iva: Number(produto.preco_com_iva),
+                                imagem: produto.imagem,
+                            })}
+                            className="col-span-1 h-10 flex items-center justify-center bg-neutral-100 text-neutral-600 rounded-lg hover:bg-blue-900 hover:text-white transition-all active:scale-90 disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            <i className="fas fa-shopping-cart text-xs"></i>
+                          </button>
+                          
+                          <Link
+                            to={`/produtos/${productSlug}`}
+                            className="col-span-4 h-10 flex items-center justify-center bg-blue-900 text-white text-[10px] font-black uppercase tracking-widest rounded-lg hover:bg-blue-800 transition-all no-underline shadow-lg shadow-blue-900/10"
+                          >
+                            Ver Detalhes
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Ver Mais Premium */}
             {visibleCount < produtosFiltrados.length && (
-              <div className="flex justify-center mt-8">
+              <div className="flex justify-center mt-16">
                 <button
                   onClick={() => setVisibleCount((prev) => prev + 8)}
-                  className="px-6 py-3 cursor-pointer bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition"
+                  className="px-12 py-4 bg-white border border-neutral-200 text-neutral-800 text-[11px] font-black uppercase tracking-[0.2em] rounded-xl hover:bg-neutral-900 hover:text-white hover:border-neutral-900 transition-all duration-300 shadow-sm"
                 >
-                  Ver Mais
+                  Carregar mais produtos
                 </button>
               </div>
             )}
