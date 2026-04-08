@@ -26,7 +26,7 @@ export default function Footer() {
               <i className="far fa-envelope text-blue-900"></i> geral@hossidev.com
             </a>
             <span className="flex items-center gap-2 text-neutral-600">
-              <i className="fas fa-phone text-blue-900"></i> (+244) 972 614 886
+              <i className="fas fa-phone text-blue-900"></i> (+244) 924 034 804
             </span>
           </div>
         </div>
@@ -62,8 +62,8 @@ export default function Footer() {
             <p className="text-sm font-bold text-neutral-700 mb-4">Seg - Sex: 08h às 17h</p>
             
             <p className="text-xs font-bold text-neutral-400 uppercase tracking-tighter mb-1">WhatsApp</p>
-            <a href="tel:+244921791707" className="text-sm font-black text-blue-900 hover:underline no-underline">
-              (+244) 921 791 707
+            <a href="tel:+244924034804" className="text-sm font-black text-blue-900 hover:underline no-underline">
+              (+244) 924 034 804
             </a>
           </div>
         </div>
