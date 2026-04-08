@@ -10,7 +10,7 @@ export default function Footer() {
         {/* Branding e Endereço */}
         <div className="md:col-span-4 flex flex-col">
           <Link to="/" className="flex flex-col leading-none mb-6 no-underline group">
-            <span className="text-2xl font-[900] tracking-tighter text-neutral-700 group-hover:text-blue-900 transition-colors">
+            <span className="text-2xl font-black tracking-tighter text-neutral-700 group-hover:text-blue-900 transition-colors">
               HOSSIDEV
             </span>
             <span className="text-[10px] font-bold tracking-[0.4em] text-blue-900 uppercase">

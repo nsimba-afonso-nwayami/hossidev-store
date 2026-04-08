@@ -65,7 +65,7 @@ export default function Header() {
   const getSlug = (desc) => desc.toLowerCase().replaceAll(" ", "-").replaceAll("/", "");
 
   return (
-    <header className={`fixed top-0 left-0 w-full z-[100] transition-all duration-500 ${
+    <header className={`fixed top-0 left-0 w-full z-100 transition-all duration-500 ${
       scrolled ? "bg-neutral-50/80 backdrop-blur-lg shadow-md py-2" : "bg-neutral-50 py-4"
     }`}>
       
@@ -74,7 +74,7 @@ export default function Header() {
         
         {/* Logo Branding */}
         <Link to="/" className="flex flex-col leading-none group shrink-0 no-underline">
-          <span className="text-2xl font-[900] tracking-tighter text-neutral-700 group-hover:text-blue-900 transition-colors">
+          <span className="text-2xl font-black tracking-tighter text-neutral-700 group-hover:text-blue-900 transition-colors">
             HOSSIDEV
           </span>
           <span className="text-[10px] font-bold tracking-[0.4em] text-blue-900 uppercase">
@@ -84,7 +84,7 @@ export default function Header() {
 
         {/* Busca Desktop Premium */}
         <div className="hidden md:block flex-1 max-w-lg relative">
-          <div className="relative group z-[110]">
+          <div className="relative group z-110">
             <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
               <i className="fas fa-search text-neutral-400 group-focus-within:text-blue-900 transition-colors"></i>
             </div>
@@ -99,7 +99,7 @@ export default function Header() {
 
           {/* Dropdown de Resultados (Corrigido Z-index e Vazio) */}
           {searchTerm && (
-            <div className="absolute top-full left-0 mt-3 w-full bg-white rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] border border-neutral-100 overflow-hidden z-[120] animate-in fade-in slide-in-from-top-2">
+            <div className="absolute top-full left-0 mt-3 w-full bg-white rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] border border-neutral-100 overflow-hidden z-120 animate-in fade-in slide-in-from-top-2">
               {loadingSearch ? (
                 <div className="p-4 text-center text-sm text-neutral-500">
                   <i className="fas fa-spinner fa-spin mr-2 text-blue-900"></i> Buscando...
@@ -208,7 +208,7 @@ export default function Header() {
       </div>
 
       {/* Menu Mobile Overlay */}
-      <aside className={`fixed inset-0 bg-neutral-900/60 backdrop-blur-sm z-[200] transition-all duration-500 md:hidden ${menuOpen ? "opacity-100 visible" : "opacity-0 invisible"}`}>
+      <aside className={`fixed inset-0 bg-neutral-900/60 backdrop-blur-sm z-200 transition-all duration-500 md:hidden ${menuOpen ? "opacity-100 visible" : "opacity-0 invisible"}`}>
         <div className={`absolute left-0 top-0 h-full w-[80%] bg-white shadow-2xl transition-transform duration-500 ${menuOpen ? "translate-x-0" : "-translate-x-full"}`}>
           <div className="p-6 border-b border-neutral-100 flex justify-between items-center">
             <span className="font-black text-blue-900 tracking-tighter">HOSSIDEV STORE</span>
