@@ -118,9 +118,9 @@ export default function PoliticaPrivacidade() {
             <div className="bg-neutral-50 p-6 rounded-lg border border-neutral-200 mt-8">
               <h2 className="text-lg font-bold text-blue-900 mb-4">Contato</h2>
               <div className="space-y-2 text-neutral-600">
-                <p><strong>Email:</strong> info@hossidev.com</p>
-                <p><strong>WhatsApp:</strong> (+244) 972 614 886</p>
-                <p><strong>Telefone:</strong> (+244) 921 909 103</p>
+                <p><strong>Email:</strong> geral@hossidev.com</p>
+                <p><strong>WhatsApp:</strong> (+244) 924 034 804</p>
+                <p><strong>Telefone:</strong> (+244) 924 034 804</p>
               </div>
             </div>
           </div>
