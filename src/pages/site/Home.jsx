@@ -17,7 +17,7 @@ export default function Home() {
       <OutrosProdutos />
 
       {/* Botão WhatsApp fixo */}
-      <WhatsAppButton phone="244972614886" size={64} />
+      <WhatsAppButton phone="244924034804" size={64} />
     </>
   );
 }

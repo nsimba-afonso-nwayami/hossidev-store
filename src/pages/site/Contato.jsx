@@ -61,9 +61,9 @@ export default function Contato() {
                 <h3 className="font-bold text-neutral-800">Telefones</h3>
               </div>
               <p className="text-neutral-600 font-medium">
-                (+244) 921 909 103
+                (+244) 924 034 804
                 <br />
-                (+244) 972 614 886
+                (+244) 924 034 804
               </p>
             </div>
 
@@ -82,7 +82,7 @@ export default function Contato() {
                 <i className="fa-brands fa-whatsapp text-blue-900 text-xl"></i>
                 <h3 className="font-bold text-neutral-800">WhatsApp</h3>
               </div>
-              <p className="text-neutral-600 font-medium">(+244) 972 614 886</p>
+              <p className="text-neutral-600 font-medium">(+244) 924 034 804</p>
             </div>
 
             {/* Contactos comerciais */}
@@ -94,7 +94,7 @@ export default function Contato() {
                 </h3>
               </div>
               <p className="text-neutral-600">
-                (+244) 921 793 774
+                (+244) 924 034 804
                 <br />
                 <span className="text-sm">Email: geral@hossidev.com</span>
               </p>
@@ -109,7 +109,7 @@ export default function Contato() {
                 </h3>
               </div>
               <p className="text-neutral-600">
-                (+244) 921 791 707 / 921 902 078
+                (+244) 924 034 804 / 924 034 804
                 <br />
                 <span className="font-medium">Email: suporte@hossidev.com</span>
               </p>
@@ -119,7 +119,7 @@ export default function Contato() {
       </section>
 
       {/* Botão WhatsApp fixo */}
-      <WhatsAppButton phone="244972614886" size={64} />
+      <WhatsAppButton phone="244924034804" size={64} />
     </>
   );
 }
