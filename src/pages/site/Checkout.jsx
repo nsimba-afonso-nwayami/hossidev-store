@@ -55,7 +55,7 @@ export default function Checkout() {
     const nomeClienteLimpo = (data.nome || user?.username || "CLIENTE").split(" ")[0].toUpperCase();
     
     // Nome do arquivo com o novo nome da empresa
-    const nomeArquivo = `PROFORMA_${nomeClienteLimpo}_NWAYAMI_STORE_${dataArquivo}_${horaArquivo}.pdf`;
+    const nomeArquivo = `PROFORMA_${nomeClienteLimpo}_HOSSIDEV_STORE_${dataArquivo}_${horaArquivo}.pdf`;
 
     const dataVencimento = new Date(agora.getTime() + (5 * 24 * 60 * 60 * 1000)).toLocaleDateString("pt-AO");
 
@@ -69,7 +69,7 @@ export default function Checkout() {
 
     doc.setFont("helvetica", "bold");
     doc.setFontSize(8);
-    doc.text("N-WAYAMI STORE", 15, 26); // Nome da empresa atualizado no topo
+    doc.text("HOSSIDEV STORE", 15, 26); // Nome da empresa atualizado no topo
 
     doc.setFont("helvetica", "normal");
     doc.setFontSize(7.5);
@@ -78,8 +78,8 @@ export default function Checkout() {
       "QUARTEIRÃO F, EDIFÍCIO 27,",
       "APARTAMENTO Nº91",
       "Contribuinte: 5002061422",
-      "E-mail: geral@nwayami.com",
-      "Tel: 924054954"
+      "E-mail: geral@hossidev.com",
+      "Tel: 924034804"
     ], 15, 30);
 
     doc.text("Exmo.(s) Sr.(s)", 140, 28);
