@@ -46,10 +46,10 @@ export default function Footer() {
           <h4 className="text-[11px] font-black uppercase tracking-[0.2em] text-blue-900 mb-2">
             Categorias
           </h4>
-          <Link to="/categoria/informatica-impressao" className="text-sm text-neutral-500 hover:text-blue-900 transition-colors no-underline">Informática & Impressão</Link>
-          <Link to="/categoria/redes-internet-telecom" className="text-sm text-neutral-500 hover:text-blue-900 transition-colors no-underline">Redes & Internet</Link>
-          <Link to="/categoria/energia-seguranca" className="text-sm text-neutral-500 hover:text-blue-900 transition-colors no-underline">Segurança Eletrónica</Link>
-          <Link to="/categoria/smartphones-tablets" className="text-sm text-neutral-500 hover:text-blue-900 transition-colors no-underline">Smartphones & Tablets</Link>
+          <Link to="/categoria/informática" className="text-sm text-neutral-500 hover:text-blue-900 transition-colors no-underline">Informática</Link>
+          <Link to="/categoria/impressão" className="text-sm text-neutral-500 hover:text-blue-900 transition-colors no-underline">Impressão</Link>
+          <Link to="/categoria/segurança-electrónica" className="text-sm text-neutral-500 hover:text-blue-900 transition-colors no-underline">Segurança Eletrónica</Link>
+          <Link to="/categoria/smartphones,-tablets-e-telemóveis" className="text-sm text-neutral-500 hover:text-blue-900 transition-colors no-underline">Smartphones, Tablets & Telemóveis</Link>
         </div>
 
         {/* Suporte Técnico */}
