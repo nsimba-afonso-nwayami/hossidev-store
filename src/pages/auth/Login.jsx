@@ -62,7 +62,7 @@ export default function Login() {
           </div>
 
           <h1 className="text-3xl font-bold text-neutral-800 mb-6 text-center tracking-tight">
-            Entrar na Nwayami Store
+            Entrar na Hossidev Store
           </h1>
 
           <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
