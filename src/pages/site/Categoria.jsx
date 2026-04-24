@@ -104,11 +104,17 @@ export default function Categoria() {
                 >
                   {/* Imagem Container */}
                   <div className="relative w-full h-56 overflow-hidden rounded-xl bg-neutral-50 mb-4">
-                    <img
-                      src={formatImageUrl(produto.imagem)}
-                      alt={produto.descricao}
-                      className="w-full h-full object-contain p-4 transition-transform duration-500 group-hover:scale-110"
-                    />
+                    {produto.imagem && produto.imagem.split("/").pop().toLowerCase().startsWith("store_1_") ? (
+                      <div className="w-full h-full flex items-center justify-center text-neutral-300 text-5xl">
+                        <i className="fas fa-shopping-cart"></i>
+                      </div>
+                    ) : (
+                      <img
+                        src={formatImageUrl(produto.imagem)}
+                        alt={produto.descricao}
+                        className="w-full h-full object-contain p-4 transition-transform duration-500 group-hover:scale-110"
+                      />
+                    )}
                     <div className={`absolute top-3 left-3 px-2 py-1 rounded-md text-[9px] font-bold uppercase tracking-wider ${
                       produto.stock === "Disponível" 
                       ? "bg-green-50 text-green-600" 

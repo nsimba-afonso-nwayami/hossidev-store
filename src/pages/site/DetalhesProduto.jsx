@@ -60,11 +60,17 @@ export default function DetalhesProduto() {
             {/* Galeria/Imagem à Esquerda */}
             <div className="lg:w-1/2">
               <div className="sticky top-40 bg-neutral-50 rounded-3xl p-8 md:p-12 border border-neutral-100 shadow-sm">
-                <img
-                  src={formatImageUrl(produto.imagem)}
-                  alt={produto.descricao}
-                  className="w-full h-auto object-contain mix-blend-multiply transition-transform duration-500 hover:scale-105"
-                />
+                {produto.imagem && produto.imagem.split("/").pop().toLowerCase().startsWith("store_1_") ? (
+                  <div className="w-full h-auto object-contain mix-blend-multiply flex items-center justify-center text-neutral-300 text-5xl">
+                    <i className="fas fa-shopping-cart"></i>
+                  </div>
+                ) : (
+                  <img
+                    src={formatImageUrl(produto.imagem)}
+                    alt={produto.descricao}
+                    className="w-full h-auto object-contain mix-blend-multiply transition-transform duration-500 hover:scale-105"
+                  />
+                )}
               </div>
             </div>
 

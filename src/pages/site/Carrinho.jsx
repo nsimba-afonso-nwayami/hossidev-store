@@ -68,12 +68,17 @@ export default function Carrinho() {
                     key={item.id}
                     className="bg-white rounded-2xl border border-neutral-200 p-4 md:p-6 flex flex-col sm:flex-row gap-6 items-center transition-hover hover:shadow-md"
                   >
-                    <img
-                      src={formatImageUrl(item.imagem)}
-                      alt={item.descricao}
-                      className="w-24 h-24 object-contain bg-neutral-50 rounded-xl"
-                    />
-
+                    {item.imagem && item.imagem.split("/").pop().toLowerCase().startsWith("store_1_") ? (
+                        <div className="w-24 h-24 flex items-center justify-center text-neutral-300 text-5xl">
+                          <i className="fas fa-shopping-cart"></i>
+                        </div>
+                      ) : (
+                        <img
+                          src={formatImageUrl(item.imagem)}
+                          alt={item.descricao}
+                          className="w-24 h-24 object-contain bg-neutral-50 rounded-xl"
+                        />
+                      )}
                     <div className="flex-1 text-center sm:text-left">
                       <h2 className="font-bold text-neutral-800 leading-snug">
                         {item.descricao}
