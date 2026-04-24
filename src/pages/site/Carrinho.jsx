@@ -22,7 +22,7 @@ export default function Carrinho() {
 
   return (
     <>
-      <title>Carrinho | Hossidev Dev</title>
+      <title>Carrinho | Hossidev Store</title>
       <section className="w-full bg-neutral-100 min-h-screen pt-32 md:pt-40 pb-20">
         <div className="max-w-7xl mx-auto px-6">
           

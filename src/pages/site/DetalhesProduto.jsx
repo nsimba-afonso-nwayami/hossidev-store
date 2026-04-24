@@ -31,7 +31,7 @@ export default function DetalhesProduto() {
 
   useEffect(() => {
     if (produto) {
-      document.title = `${produto.descricao} | Nwayami Store`;
+      document.title = `${produto.descricao} | Hossidev Store`;
     }
   }, [produto]);
 

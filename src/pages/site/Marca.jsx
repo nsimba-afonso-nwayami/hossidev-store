@@ -42,7 +42,7 @@ export default function Marca() {
   );
 
   useEffect(() => {
-    document.title = `${marcaFormatada} | Nwayami Store`;
+    document.title = `${marcaFormatada} | Hossidev Store`;
   }, [marcaFormatada]);
 
   if (loading) {

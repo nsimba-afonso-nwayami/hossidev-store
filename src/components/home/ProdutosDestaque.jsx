@@ -112,7 +112,7 @@ export default function ProdutosDestaque() {
                           preco_com_iva: Number(produto.preco_com_iva),
                           imagem: produto.imagem,
                         })}
-                        className="col-span-1 h-10 flex items-center justify-center bg-neutral-100 text-neutral-600 rounded-lg hover:bg-blue-900 hover:text-white transition-all active:scale-90"
+                        className="col-span-1 h-10 cursor-pointer flex items-center justify-center bg-neutral-100 text-neutral-600 rounded-lg hover:bg-blue-900 hover:text-white transition-all active:scale-90"
                         title="Rápido Adicionar"
                       >
                         <i className="fas fa-shopping-cart text-xs"></i>
@@ -120,7 +120,7 @@ export default function ProdutosDestaque() {
                       
                       <Link
                         to={`/produtos/${produto.descricao.toLowerCase().replaceAll(" ", "-").replaceAll("/", "")}`}
-                        className="col-span-4 h-10 flex items-center justify-center bg-blue-900 text-white text-[10px] font-black uppercase tracking-widest rounded-lg hover:bg-blue-800 transition-all no-underline shadow-lg shadow-blue-900/10"
+                        className="col-span-4 h-10 cursor-pointer flex items-center justify-center bg-blue-900 text-white text-[10px] font-black uppercase tracking-widest rounded-lg hover:bg-blue-800 transition-all no-underline shadow-lg shadow-blue-900/10"
                       >
                         Ver Detalhes
                       </Link>

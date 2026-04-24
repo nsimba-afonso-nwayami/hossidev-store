@@ -8,7 +8,7 @@ import OutrosProdutos from "../../components/home/OutrosProdutos";
 export default function Home() {
   return (
     <>
-      <title>Nwayami Store</title>
+      <title>Hossidev Store</title>
 
       <Hero />
       <ProdutosDestaque />

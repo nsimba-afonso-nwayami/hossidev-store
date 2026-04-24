@@ -74,11 +74,9 @@ export default function Checkout() {
     doc.setFont("helvetica", "normal");
     doc.setFontSize(7.5);
     doc.text([
-      "CENTRALIDADE DO KILAMBA,",
-      "QUARTEIRÃO F, EDIFÍCIO 27,",
-      "APARTAMENTO Nº91",
-      "Contribuinte: 5002061422",
-      "E-mail: geral@hossidev.com",
+      "Benfica Zona Verde 3",
+      "Contribuinte: 5002911396",
+      "E-mail: geral@hossidev.com | comercial@hossidev.com",
       "Tel: 924034804"
     ], 15, 30);
 
@@ -250,7 +248,7 @@ export default function Checkout() {
 
   return (
     <>
-      <title>Checkout | Nwayami Store</title>
+      <title>Checkout | Hossidev Dev</title>
       <section className="w-full min-h-screen bg-neutral-50 py-16 pt-47">
         <div className="max-w-7xl mx-auto px-4">
           <h1 className="text-2xl md:text-3xl font-bold text-neutral-800 mb-10 tracking-tight">
