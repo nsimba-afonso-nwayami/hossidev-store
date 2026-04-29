@@ -37,7 +37,7 @@ Luanda, Angola
             Institucional
           </h4>
           <Link to="/sobre" className="text-sm text-neutral-500 hover:text-blue-900 transition-colors no-underline">Sobre Nós</Link>
-          <Link to="/politica-privacidade" className="text-sm text-neutral-500 hover:text-blue-900 transition-colors no-underline">Privacidade</Link>
+          <Link to="/termos" className="text-sm text-neutral-500 hover:text-blue-900 transition-colors no-underline">Termos</Link>
           <Link to="/contato" className="text-sm text-neutral-500 hover:text-blue-900 transition-colors no-underline">Contactos</Link>
         </div>
 
