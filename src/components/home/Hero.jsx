@@ -13,26 +13,26 @@ import HeroImg4 from "../../assets/img/hero4.png";
 const slides = [
   {
     img: HeroImg1,
-    title: "Eletrodomésticos de Alta Performance",
-    desc: "Inovação e design para transformar o dia a dia da sua residência.",
+    title: "",
+    desc: "",
     link: "/categoria/electrodomesticos-software"
   },
   {
     img: HeroImg2,
-    title: "Soluções em Energia & Segurança",
-    desc: "Sistemas inteligentes para garantir proteção e economia total.",
+    title: "",
+    desc: "",
     link: "/categoria/energia-seguranca"
   },
   {
     img: HeroImg3,
-    title: "Experiência de Som e Imagem",
-    desc: "O melhor do cinema profissional no conforto do seu espaço.",
+    title: "",
+    desc: "",
     link: "/categoria/imagem-som"
   },
   {
     img: HeroImg4,
-    title: "Sistemas Profissionais de Impressão",
-    desc: "Alta definição e produtividade para o crescimento do seu negócio.",
+    title: "",
+    desc: "",
     link: "/categoria/informatica-impressao"
   }
 ];

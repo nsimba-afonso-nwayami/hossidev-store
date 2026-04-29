@@ -18,8 +18,8 @@ export default function Footer() {
             </span>
           </Link>
           <p className="text-neutral-500 text-sm leading-relaxed mb-6 max-w-sm">
-            Centralidade do Kilamba, Quarteirão F, edifício F27, apartamento 91,
-            Kilamba, Luanda - Angola
+           Benfica Zona Verde 3,
+Luanda, Angola
           </p>
           <div className="flex flex-col gap-3 text-sm font-medium">
             <a href="mailto:geral@hossidev.com" className="flex items-center gap-2 text-neutral-600 hover:text-blue-900 transition-colors no-underline">

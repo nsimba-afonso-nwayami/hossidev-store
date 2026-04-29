@@ -206,7 +206,7 @@ export default function Checkout() {
     const footerY = 280;
     doc.setFontSize(7);
     doc.setFont("helvetica", "normal");
-    doc.text("N-WAYAMI STORE", 15, footerY); // Nome da empresa no rodapé
+    doc.text("HOSSIDEV STORE", 15, footerY); // Nome da empresa no rodapé
     doc.text("Tel. +244 924 054 954", 15, footerY + 3);
     doc.text("Centralidade do Kilamba, Quarteirão F27, Apt n.91", 50, footerY);
     doc.text("geral@nwayami.com", 50, footerY + 3);
