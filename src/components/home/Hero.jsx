@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, EffectFade } from "swiper/modules";
+import { Autoplay, EffectFade, Pagination } from "swiper/modules";
 
 import "swiper/css";
 import "swiper/css/effect-fade";
+import "swiper/css/pagination";
 
 import HeroImg1 from "../../assets/img/hero1.png";
 import HeroImg2 from "../../assets/img/hero2.png";
@@ -11,84 +12,36 @@ import HeroImg3 from "../../assets/img/hero3.png";
 import HeroImg4 from "../../assets/img/hero4.png";
 
 const slides = [
-  {
-    img: HeroImg1,
-    title: "",
-    desc: "",
-    link: "/categoria/electrodomesticos-software"
-  },
-  {
-    img: HeroImg2,
-    title: "",
-    desc: "",
-    link: "/categoria/energia-seguranca"
-  },
-  {
-    img: HeroImg3,
-    title: "",
-    desc: "",
-    link: "/categoria/imagem-som"
-  },
-  {
-    img: HeroImg4,
-    title: "",
-    desc: "",
-    link: "/categoria/informatica-impressao"
-  }
+  { img: HeroImg1, link: "/categoria/electrodomésticos" },
+  { img: HeroImg2, link: "/categoria/energia" },
+  { img: HeroImg3, link: "/categoria/imagem" },
+  { img: HeroImg4, link: "/categoria/informática" }
 ];
 
 export default function Hero() {
   return (
-    <section className="relative w-full h-[75vh] md:h-[80vh] bg-neutral-100 pt-35 md:pt-40">
+    <section className="relative w-full h-[65vh] md:h-[85vh] bg-neutral-100 pt-44 md:pt-32 overflow-hidden">
       <Swiper
-        modules={[Autoplay, EffectFade]}
+        modules={[Autoplay, EffectFade, Pagination]}
         effect="fade"
         autoplay={{ delay: 6000, disableOnInteraction: false }}
+        pagination={{ clickable: true }}
         grabCursor={true}
         loop
         className="h-full w-full"
       >
         {slides.map((slide, index) => (
           <SwiperSlide key={index}>
-            <div className="relative w-full h-full flex items-center overflow-hidden">
-              
-              <div className="absolute inset-0 bg-linear-to-r from-neutral-900/60 via-neutral-900/20 to-transparent z-10" />
+            <Link to={slide.link} className="block relative w-full h-full overflow-hidden">
+              {/* Overlay sutil apenas para dar profundidade, sem bloquear a leitura da imagem */}
+              <div className="absolute inset-0 bg-black/5 z-10 hover:bg-black/0 transition-colors duration-500" />
               
               <img
                 src={slide.img}
-                alt={slide.title}
+                alt={`Banner HOSSIDEV ${index + 1}`}
                 className="absolute inset-0 w-full h-full object-cover object-center animate-slow-zoom"
               />
-
-              <div className="relative z-20 max-w-7xl mx-auto px-6 md:px-10 w-full">
-                <div className="max-w-xl">
-                  {/* Título: Reduzido para text-5xl e font-bold (700) */}
-                  <h1 className="text-3xl md:text-5xl font-bold text-white tracking-tight leading-tight mb-4">
-                    {slide.title}
-                  </h1>
-
-                  {/* Descrição: Mais leve e discreta */}
-                  <p className="text-base md:text-lg text-neutral-200 font-normal mb-8 leading-relaxed max-w-md opacity-90">
-                    {slide.desc}
-                  </p>
-
-                  <div className="flex flex-wrap items-center gap-4">
-                    <Link
-                      to={slide.link}
-                      className="px-7 py-3.5 bg-white text-blue-900 text-[10px] font-bold uppercase tracking-widest rounded-xl hover:bg-blue-900 hover:text-white transition-all shadow-lg no-underline"
-                    >
-                      Ver Detalhes
-                    </Link>
-                    <Link
-                      to="/contato"
-                      className="px-7 py-3.5 border border-white/30 text-white text-[10px] font-bold uppercase tracking-widest rounded-xl hover:bg-white/10 backdrop-blur-sm transition-all no-underline"
-                    >
-                      Consultoria
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </div>
+            </Link>
           </SwiperSlide>
         ))}
       </Swiper>
@@ -96,10 +49,20 @@ export default function Hero() {
       <style dangerouslySetInnerHTML={{ __html: `
         @keyframes slow-zoom {
           from { transform: scale(1); }
-          to { transform: scale(1.12); }
+          to { transform: scale(1.08); }
         }
         .animate-slow-zoom {
-          animation: slow-zoom 25s linear infinite alternate;
+          animation: slow-zoom 15s ease-in-out infinite alternate;
+        }
+        /* Estilização dos indicadores para a paleta Blue-900 */
+        .swiper-pagination-bullet-active {
+          background: #1e3a8a !important; 
+          width: 24px !important;
+          border-radius: 4px !important;
+        }
+        .swiper-pagination-bullet {
+          background: #94a3b8;
+          opacity: 0.6;
         }
       `}} />
     </section>
