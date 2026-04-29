@@ -207,11 +207,11 @@ export default function Checkout() {
     doc.setFontSize(7);
     doc.setFont("helvetica", "normal");
     doc.text("HOSSIDEV STORE", 15, footerY); // Nome da empresa no rodapé
-    doc.text("Tel. +244 924 054 954", 15, footerY + 3);
-    doc.text("Centralidade do Kilamba, Quarteirão F27, Apt n.91", 50, footerY);
-    doc.text("geral@nwayami.com", 50, footerY + 3);
-    doc.text("Município de Kilamba, Luanda, República de Angola", 120, footerY);
-    doc.text("www.store.nwayami.com", 120, footerY + 3);
+    doc.text("Tel. +244 924 034 804", 15, footerY + 3);
+    doc.text("Benfica, Zona Verde 3", 50, footerY);
+    doc.text("geral@hossidev.com", 50, footerY + 3);
+    doc.text("Município de Belas, Luanda, República de Angola", 120, footerY);
+    doc.text("lojaonline.hossidev.com", 120, footerY + 3);
 
     doc.save(nomeArquivo);
   };
@@ -249,7 +249,7 @@ export default function Checkout() {
   return (
     <>
       <title>Checkout | Hossidev Dev</title>
-      <section className="w-full min-h-screen bg-neutral-50 py-16 pt-47">
+      <section className="w-full min-h-screen bg-neutral-50 py-16 pt-50">
         <div className="max-w-7xl mx-auto px-4">
           <h1 className="text-2xl md:text-3xl font-bold text-neutral-800 mb-10 tracking-tight">
             Finalizar Compra
