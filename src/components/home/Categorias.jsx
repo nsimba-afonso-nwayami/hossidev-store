@@ -44,7 +44,7 @@ export default function Categorias() {
         });
         setCategorias(categoriasComImagem);
       } catch (error) {
-        console.error("Erro ao carregar categorias:", error);
+        //console.error("Erro ao carregar categorias:", error);
       }
     }
     carregarCategorias();

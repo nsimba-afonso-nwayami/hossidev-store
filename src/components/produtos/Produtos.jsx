@@ -32,7 +32,7 @@ export default function Produtos() {
         const data = await listarProdutos();
         setProdutos(shuffleArray(data));
       } catch (error) {
-        console.error("Erro ao carregar produtos:", error);
+        //console.error("Erro ao carregar produtos:", error);
       } finally {
         setLoading(false);
       }
