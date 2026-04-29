@@ -103,7 +103,7 @@ export default function Checkout() {
     doc.line(120, 67, 155, 67);
     doc.text(dataEmissao, 15, 71);
     doc.text(dataVencimento, 55, 71);
-    doc.text("5002061422", 120, 71);
+    doc.text("5002911396", 120, 71);
 
     doc.setFont("helvetica", "bold");
     doc.text("Observações", 15, 80);
