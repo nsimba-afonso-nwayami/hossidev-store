@@ -23,10 +23,10 @@ export default function Carrinho() {
   return (
     <>
       <title>Carrinho | Hossidev Store</title>
-      <section className="w-full bg-neutral-100 min-h-screen pt-32 md:pt-40 pb-20">
+      <section className="w-full bg-neutral-100 min-h-screen pt-50 pb-20">
         <div className="max-w-7xl mx-auto px-6">
           
-          <div className="flex justify-between items-center mb-10">
+          <div className="flex flex-col items-center mb-10 gap-6">
             <h1 className="text-3xl md:text-4xl font-bold text-neutral-800 tracking-tight">
               Carrinho de Compras
             </h1>

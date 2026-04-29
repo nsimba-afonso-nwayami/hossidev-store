@@ -5,7 +5,7 @@ export default function Contato() {
     <>
       <title>Contato | Hossidev Store</title>
 
-      <section className="w-full bg-neutral-100 pt-47 pb-16">
+      <section className="w-full bg-neutral-100 pt-50 pb-16">
         <div className="max-w-6xl mx-auto px-4">
           {/* Título */}
           <div className="text-center mb-12">
