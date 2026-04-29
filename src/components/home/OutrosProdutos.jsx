@@ -25,7 +25,7 @@ export default function OutrosProdutos() {
         const produtosAleatorios = data.sort(() => Math.random() - 0.5);
         setProdutos(produtosAleatorios.slice(0, 8));
       } catch (error) {
-        console.error("Erro ao carregar outros produtos:", error);
+        //console.error("Erro ao carregar outros produtos:", error);
       } finally {
         setLoading(false);
       }
@@ -47,7 +47,7 @@ export default function OutrosProdutos() {
       <div className="max-w-7xl mx-auto px-6">
         
         {/* Header Alinhado ao Padrão Destaque */}
-        <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
+        <div className="flex flex-col mb-12 gap-4">
           <div className="max-w-xl">
             <h2 className="text-3xl md:text-4xl font-bold text-neutral-800 tracking-tight mb-2">
               Mais Sugestões

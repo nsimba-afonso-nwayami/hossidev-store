@@ -20,7 +20,7 @@ export default function ProdutosDestaque() {
         const produtosAleatorios = data.sort(() => Math.random() - 0.5);
         setProdutos(produtosAleatorios.slice(0, 8));
       } catch (error) {
-        console.error("Erro ao carregar produtos:", error);
+        //console.error("Erro ao carregar produtos:", error);
       } finally {
         setLoading(false);
       }
@@ -42,7 +42,7 @@ export default function ProdutosDestaque() {
       <div className="max-w-7xl mx-auto px-6">
         
         {/* Header da Seção */}
-        <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
+        <div className="flex flex-col justify-between mb-12 gap-4">
           <div className="max-w-xl">
             <h2 className="text-3xl md:text-4xl font-bold text-neutral-800 tracking-tight mb-2">
               Destaques da Coleção
@@ -53,9 +53,9 @@ export default function ProdutosDestaque() {
           </div>
           <Link
             to="/produtos"
-            className="text-[11px] font-black uppercase tracking-widest text-blue-900 hover:text-blue-700 transition-colors border-b-2 border-blue-900/20 pb-1 no-underline"
+            className="text-[11px] font-bold uppercase tracking-widest text-blue-900 hover:text-blue-700 transition-colors border-b-2 border-blue-900/20 pb-1 no-underline"
           >
-            Explorar Catálogo Full
+            Explorar Catálogo Completo
           </Link>
         </div>
 
