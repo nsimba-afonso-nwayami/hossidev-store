@@ -20,7 +20,7 @@ export default function ProdutosDestaque() {
         const produtosAleatorios = data.sort(() => Math.random() - 0.5);
         setProdutos(produtosAleatorios.slice(0, 8));
       } catch (error) {
-        console.error("Erro ao carregar produtos:", error);
+        //console.error("Erro ao carregar produtos:", error);
       } finally {
         setLoading(false);
       }
@@ -42,7 +42,7 @@ export default function ProdutosDestaque() {
       <div className="max-w-7xl mx-auto px-6">
         
         {/* Header da Seção */}
-        <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
+        <div className="flex flex-col justify-between mb-12 gap-4">
           <div className="max-w-xl">
             <h2 className="text-3xl md:text-4xl font-bold text-neutral-800 tracking-tight mb-2">
               Destaques da Coleção
@@ -53,9 +53,9 @@ export default function ProdutosDestaque() {
           </div>
           <Link
             to="/produtos"
-            className="text-[11px] font-black uppercase tracking-widest text-blue-900 hover:text-blue-700 transition-colors border-b-2 border-blue-900/20 pb-1 no-underline"
+            className="text-[11px] font-bold uppercase tracking-widest text-blue-900 hover:text-blue-700 transition-colors border-b-2 border-blue-900/20 pb-1 no-underline"
           >
-            Explorar Catálogo Full
+            Explorar Catálogo Completo
           </Link>
         </div>
 
@@ -71,11 +71,17 @@ export default function ProdutosDestaque() {
               >
                 {/* Imagem Container */}
                 <div className="relative w-full h-56 overflow-hidden rounded-xl bg-neutral-50 mb-4">
-                  <img
-                    src={formatImageUrl(produto.imagem)}
-                    alt={produto.descricao}
-                    className="w-full h-full object-contain p-4 transition-transform duration-500 group-hover:scale-110"
-                  />
+                  {produto.imagem && produto.imagem.split("/").pop().toLowerCase().startsWith("store_1_") ? (
+                    <div className="w-full h-full flex items-center justify-center text-neutral-300 text-5xl">
+                      <i className="fas fa-shopping-cart"></i>
+                    </div>
+                  ) : (
+                    <img
+                      src={formatImageUrl(produto.imagem)}
+                      alt={produto.descricao}
+                      className="w-full h-full object-contain p-4 transition-transform duration-500 group-hover:scale-110"
+                    />
+                  )}
                   {/* Badge de Stock */}
                   <div className={`absolute top-3 left-3 px-2 py-1 rounded-md text-[9px] font-bold uppercase tracking-wider ${
                     produto.stock === "Disponível" 
@@ -112,7 +118,7 @@ export default function ProdutosDestaque() {
                           preco_com_iva: Number(produto.preco_com_iva),
                           imagem: produto.imagem,
                         })}
-                        className="col-span-1 h-10 flex items-center justify-center bg-neutral-100 text-neutral-600 rounded-lg hover:bg-blue-900 hover:text-white transition-all active:scale-90"
+                        className="col-span-1 h-10 cursor-pointer flex items-center justify-center bg-neutral-100 text-neutral-600 rounded-lg hover:bg-blue-900 hover:text-white transition-all active:scale-90"
                         title="Rápido Adicionar"
                       >
                         <i className="fas fa-shopping-cart text-xs"></i>
@@ -120,7 +126,7 @@ export default function ProdutosDestaque() {
                       
                       <Link
                         to={`/produtos/${produto.descricao.toLowerCase().replaceAll(" ", "-").replaceAll("/", "")}`}
-                        className="col-span-4 h-10 flex items-center justify-center bg-blue-900 text-white text-[10px] font-black uppercase tracking-widest rounded-lg hover:bg-blue-800 transition-all no-underline shadow-lg shadow-blue-900/10"
+                        className="col-span-4 h-10 cursor-pointer flex items-center justify-center bg-blue-900 text-white text-[10px] font-black uppercase tracking-widest rounded-lg hover:bg-blue-800 transition-all no-underline shadow-lg shadow-blue-900/10"
                       >
                         Ver Detalhes
                       </Link>

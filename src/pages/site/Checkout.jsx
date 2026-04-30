@@ -74,11 +74,9 @@ export default function Checkout() {
     doc.setFont("helvetica", "normal");
     doc.setFontSize(7.5);
     doc.text([
-      "CENTRALIDADE DO KILAMBA,",
-      "QUARTEIRÃO F, EDIFÍCIO 27,",
-      "APARTAMENTO Nº91",
-      "Contribuinte: 5002061422",
-      "E-mail: geral@hossidev.com",
+      "Benfica Zona Verde 3",
+      "Contribuinte: 5002911396",
+      "E-mail: geral@hossidev.com | comercial@hossidev.com",
       "Tel: 924034804"
     ], 15, 30);
 
@@ -105,7 +103,7 @@ export default function Checkout() {
     doc.line(120, 67, 155, 67);
     doc.text(dataEmissao, 15, 71);
     doc.text(dataVencimento, 55, 71);
-    doc.text("5002061422", 120, 71);
+    doc.text("5002911396", 120, 71);
 
     doc.setFont("helvetica", "bold");
     doc.text("Observações", 15, 80);
@@ -208,12 +206,12 @@ export default function Checkout() {
     const footerY = 280;
     doc.setFontSize(7);
     doc.setFont("helvetica", "normal");
-    doc.text("N-WAYAMI STORE", 15, footerY); // Nome da empresa no rodapé
-    doc.text("Tel. +244 924 054 954", 15, footerY + 3);
-    doc.text("Centralidade do Kilamba, Quarteirão F27, Apt n.91", 50, footerY);
-    doc.text("geral@nwayami.com", 50, footerY + 3);
-    doc.text("Município de Kilamba, Luanda, República de Angola", 120, footerY);
-    doc.text("www.store.nwayami.com", 120, footerY + 3);
+    doc.text("HOSSIDEV STORE", 15, footerY); // Nome da empresa no rodapé
+    doc.text("Tel. +244 924 034 804", 15, footerY + 3);
+    doc.text("Benfica, Zona Verde 3", 50, footerY);
+    doc.text("geral@hossidev.com", 50, footerY + 3);
+    doc.text("Município de Belas, Luanda, República de Angola", 120, footerY);
+    doc.text("lojaonline.hossidev.com", 120, footerY + 3);
 
     doc.save(nomeArquivo);
   };
@@ -250,8 +248,8 @@ export default function Checkout() {
 
   return (
     <>
-      <title>Checkout | Nwayami Store</title>
-      <section className="w-full min-h-screen bg-neutral-50 py-16 pt-47">
+      <title>Checkout | Hossidev Dev</title>
+      <section className="w-full min-h-screen bg-neutral-50 py-16 pt-50">
         <div className="max-w-7xl mx-auto px-4">
           <h1 className="text-2xl md:text-3xl font-bold text-neutral-800 mb-10 tracking-tight">
             Finalizar Compra

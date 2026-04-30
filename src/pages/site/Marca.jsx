@@ -42,12 +42,12 @@ export default function Marca() {
   );
 
   useEffect(() => {
-    document.title = `${marcaFormatada} | Nwayami Store`;
+    document.title = `${marcaFormatada} | Hossidev Store`;
   }, [marcaFormatada]);
 
   if (loading) {
     return (
-      <section className="w-full bg-neutral-50 min-h-screen pt-40 flex flex-col items-center">
+      <section className="w-full bg-neutral-50 min-h-screen pt-50 flex flex-col items-center">
         <div className="w-10 h-10 border-4 border-blue-900/20 border-t-blue-900 rounded-full animate-spin mb-4"></div>
         <p className="text-neutral-500 font-medium">Carregando catálogo {marcaFormatada}...</p>
       </section>
@@ -55,11 +55,11 @@ export default function Marca() {
   }
 
   return (
-    <section className="w-full bg-neutral-100 min-h-screen pt-32 md:pt-40 pb-20">
+    <section className="w-full bg-neutral-100 min-h-screen pt-50 pb-20">
       <div className="max-w-7xl mx-auto px-6">
         
         {/* Header da Marca */}
-        <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+        <div className="flex flex-col mb-12 gap-6">
           <div className="max-w-xl">
             <span className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-900 mb-2 block">
               Produtos por Marca

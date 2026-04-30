@@ -31,13 +31,13 @@ export default function DetalhesProduto() {
 
   useEffect(() => {
     if (produto) {
-      document.title = `${produto.descricao} | Nwayami Store`;
+      document.title = `${produto.descricao} | Hossidev Store`;
     }
   }, [produto]);
 
   if (loading) {
     return (
-      <section className="w-full bg-neutral-50 min-h-screen pt-40 flex flex-col items-center">
+      <section className="w-full bg-neutral-50 min-h-screen pt-50 flex flex-col items-center">
         <div className="w-10 h-10 border-4 border-blue-900/20 border-t-blue-900 rounded-full animate-spin mb-4"></div>
         <p className="text-neutral-500 font-medium animate-pulse">Sincronizando detalhes...</p>
       </section>
@@ -45,7 +45,7 @@ export default function DetalhesProduto() {
   }
 
   return (
-    <section className="w-full bg-white min-h-screen pt-32 md:pt-40 pb-20">
+    <section className="w-full bg-white min-h-screen pt-50 pb-20">
       <div className="max-w-7xl mx-auto px-6">
         {!produto ? (
           <div className="max-w-md mx-auto text-center py-20">
@@ -60,11 +60,17 @@ export default function DetalhesProduto() {
             {/* Galeria/Imagem à Esquerda */}
             <div className="lg:w-1/2">
               <div className="sticky top-40 bg-neutral-50 rounded-3xl p-8 md:p-12 border border-neutral-100 shadow-sm">
-                <img
-                  src={formatImageUrl(produto.imagem)}
-                  alt={produto.descricao}
-                  className="w-full h-auto object-contain mix-blend-multiply transition-transform duration-500 hover:scale-105"
-                />
+                {produto.imagem && produto.imagem.split("/").pop().toLowerCase().startsWith("store_1_") ? (
+                  <div className="w-full h-auto object-contain mix-blend-multiply flex items-center justify-center text-neutral-300 text-5xl">
+                    <i className="fas fa-shopping-cart"></i>
+                  </div>
+                ) : (
+                  <img
+                    src={formatImageUrl(produto.imagem)}
+                    alt={produto.descricao}
+                    className="w-full h-auto object-contain mix-blend-multiply transition-transform duration-500 hover:scale-105"
+                  />
+                )}
               </div>
             </div>
 

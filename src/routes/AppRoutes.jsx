@@ -16,7 +16,7 @@ import Carrinho from "../pages/site/Carrinho";
 import Sobre from "../pages/site/Sobre";
 import Contato from "../pages/site/Contato";
 import Checkout from "../pages/site/Checkout";
-import PoliticaPrivacidade from "../pages/site/PoliticaPrivacidade";
+import Termos from "../pages/site/Termos";
 import NotFound from "../pages/site/NotFound";
 
 //Autenticação
@@ -53,7 +53,7 @@ export default function AppRoutes() {
         />
         <Route path="/sobre" element={<Sobre />} />
         <Route path="/contato" element={<Contato />} />
-        <Route path="/politica-privacidade" element={<PoliticaPrivacidade />} />
+        <Route path="/termos" element={<Termos />} />
         <Route path="*" element={<NotFound />} />
       </Route>
 

@@ -231,7 +231,7 @@ export default function Header() {
             
             {isAuthenticated && (
               <Link to="/dashboard/cliente" onClick={() => setMenuOpen(false)} className="text-2xl font-bold text-blue-900 no-underline">
-                Olá, {user?.nome?.split(' ')[0]}
+                Olá, {user?.username || user?.nome?.split(' ')[0]}
               </Link>
             )}
 

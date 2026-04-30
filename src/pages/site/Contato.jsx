@@ -5,7 +5,7 @@ export default function Contato() {
     <>
       <title>Contato | Hossidev Store</title>
 
-      <section className="w-full bg-neutral-100 pt-47 pb-16">
+      <section className="w-full bg-neutral-100 pt-50 pb-16">
         <div className="max-w-6xl mx-auto px-4">
           {/* Título */}
           <div className="text-center mb-12">
@@ -44,13 +44,7 @@ export default function Contato() {
                 <h3 className="font-bold text-neutral-800">Localização</h3>
               </div>
               <p className="text-neutral-600 text-sm leading-relaxed">
-                Centralidade do Kilamba
-                <br />
-                Quarteirão F, edifício F27,
-                <br />
-                Apartamento 91 – Kilamba
-                <br />
-                Luanda - Angola
+               Benfica Zona Verde 3, Luanda, Angola
               </p>
             </div>
 
@@ -63,7 +57,7 @@ export default function Contato() {
               <p className="text-neutral-600 font-medium">
                 (+244) 924 034 804
                 <br />
-                (+244) 924 034 804
+                (+244) 940 105 448
               </p>
             </div>
 
@@ -109,7 +103,7 @@ export default function Contato() {
                 </h3>
               </div>
               <p className="text-neutral-600">
-                (+244) 924 034 804 / 924 034 804
+                (+244) 924 034 804 / 940 105 348
                 <br />
                 <span className="font-medium">Email: suporte@hossidev.com</span>
               </p>

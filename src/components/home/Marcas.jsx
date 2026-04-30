@@ -42,7 +42,7 @@ export default function Marcas() {
         const marcasComImagem = marcasUnicas.filter((marca) => imagensMarcas[marca]);
         setMarcas(marcasComImagem);
       } catch (error) {
-        console.error("Erro ao carregar marcas:", error);
+        //console.error("Erro ao carregar marcas:", error);
       }
     }
     carregarMarcas();

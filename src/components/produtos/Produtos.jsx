@@ -32,7 +32,7 @@ export default function Produtos() {
         const data = await listarProdutos();
         setProdutos(shuffleArray(data));
       } catch (error) {
-        console.error("Erro ao carregar produtos:", error);
+        //console.error("Erro ao carregar produtos:", error);
       } finally {
         setLoading(false);
       }
@@ -142,11 +142,17 @@ export default function Produtos() {
                   >
                     {/* Imagem Container */}
                     <div className="relative w-full h-56 overflow-hidden rounded-xl bg-neutral-50 mb-4">
-                      <img
-                        src={formatImageUrl(produto.imagem)}
-                        alt={produto.descricao}
-                        className="w-full h-full object-contain p-4 transition-transform duration-500 group-hover:scale-110"
-                      />
+                      {produto.imagem && produto.imagem.split("/").pop().toLowerCase().startsWith("store_1_") ? (
+                        <div className="w-full h-full flex items-center justify-center text-neutral-300 text-5xl">
+                          <i className="fas fa-shopping-cart"></i>
+                        </div>
+                      ) : (
+                        <img
+                          src={formatImageUrl(produto.imagem)}
+                          alt={produto.descricao}
+                          className="w-full h-full object-contain p-4 transition-transform duration-500 group-hover:scale-110"
+                        />
+                      )}
                       <div className={`absolute top-3 left-3 px-2 py-1 rounded-md text-[9px] font-bold uppercase tracking-wider ${
                         produto.stock === "Disponível" ? "bg-green-50 text-green-600" : "bg-red-50 text-red-600"
                       }`}>
@@ -179,14 +185,14 @@ export default function Produtos() {
                                 preco_com_iva: Number(produto.preco_com_iva),
                                 imagem: produto.imagem,
                             })}
-                            className="col-span-1 h-10 flex items-center justify-center bg-neutral-100 text-neutral-600 rounded-lg hover:bg-blue-900 hover:text-white transition-all active:scale-90 disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="col-span-1 h-10 cursor-pointer flex items-center justify-center bg-neutral-100 text-neutral-600 rounded-lg hover:bg-blue-900 hover:text-white transition-all active:scale-90 disabled:opacity-50 disabled:cursor-not-allowed"
                           >
                             <i className="fas fa-shopping-cart text-xs"></i>
                           </button>
                           
                           <Link
                             to={`/produtos/${productSlug}`}
-                            className="col-span-4 h-10 flex items-center justify-center bg-blue-900 text-white text-[10px] font-black uppercase tracking-widest rounded-lg hover:bg-blue-800 transition-all no-underline shadow-lg shadow-blue-900/10"
+                            className="col-span-4 h-10 cursor-pointer flex items-center justify-center bg-blue-900 text-white text-[10px] font-black uppercase tracking-widest rounded-lg hover:bg-blue-800 transition-all no-underline shadow-lg shadow-blue-900/10"
                           >
                             Ver Detalhes
                           </Link>
@@ -203,7 +209,7 @@ export default function Produtos() {
               <div className="flex justify-center mt-16">
                 <button
                   onClick={() => setVisibleCount((prev) => prev + 8)}
-                  className="px-12 py-4 bg-white border border-neutral-200 text-neutral-800 text-[11px] font-black uppercase tracking-[0.2em] rounded-xl hover:bg-neutral-900 hover:text-white hover:border-neutral-900 transition-all duration-300 shadow-sm"
+                  className="px-12 py-4 cursor-pointer bg-white border border-neutral-200 text-neutral-800 text-[11px] font-black uppercase tracking-[0.2em] rounded-xl hover:bg-neutral-900 hover:text-white hover:border-neutral-900 transition-all duration-300 shadow-sm"
                 >
                   Carregar mais produtos
                 </button>

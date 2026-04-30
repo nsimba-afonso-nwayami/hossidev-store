@@ -22,11 +22,11 @@ export default function Carrinho() {
 
   return (
     <>
-      <title>Carrinho | Hossidev Dev</title>
-      <section className="w-full bg-neutral-100 min-h-screen pt-32 md:pt-40 pb-20">
+      <title>Carrinho | Hossidev Store</title>
+      <section className="w-full bg-neutral-100 min-h-screen pt-50 pb-20">
         <div className="max-w-7xl mx-auto px-6">
           
-          <div className="flex justify-between items-center mb-10">
+          <div className="flex flex-col items-center mb-10 gap-6">
             <h1 className="text-3xl md:text-4xl font-bold text-neutral-800 tracking-tight">
               Carrinho de Compras
             </h1>
@@ -68,12 +68,17 @@ export default function Carrinho() {
                     key={item.id}
                     className="bg-white rounded-2xl border border-neutral-200 p-4 md:p-6 flex flex-col sm:flex-row gap-6 items-center transition-hover hover:shadow-md"
                   >
-                    <img
-                      src={formatImageUrl(item.imagem)}
-                      alt={item.descricao}
-                      className="w-24 h-24 object-contain bg-neutral-50 rounded-xl"
-                    />
-
+                    {item.imagem && item.imagem.split("/").pop().toLowerCase().startsWith("store_1_") ? (
+                        <div className="w-24 h-24 flex items-center justify-center text-neutral-300 text-5xl">
+                          <i className="fas fa-shopping-cart"></i>
+                        </div>
+                      ) : (
+                        <img
+                          src={formatImageUrl(item.imagem)}
+                          alt={item.descricao}
+                          className="w-24 h-24 object-contain bg-neutral-50 rounded-xl"
+                        />
+                      )}
                     <div className="flex-1 text-center sm:text-left">
                       <h2 className="font-bold text-neutral-800 leading-snug">
                         {item.descricao}
